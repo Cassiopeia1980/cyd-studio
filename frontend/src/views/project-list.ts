@@ -290,8 +290,7 @@ export class CydProjectList extends LitElement {
           </div>
         </div>`)}</div>`}
       ${this.info?.hardware_hints ? html`<div class="foot">
-        <a href=${this.info.hardware_info_url} target="_blank" rel="noopener">${t("where_to_buy")}</a> ·
-        <a href=${this.info.support_url} target="_blank" rel="noopener">♥ ${t("support_project")}</a>
+        <a href=${this.info.hardware_info_url} target="_blank" rel="noopener">${t("where_to_buy")}</a>
       </div>` : nothing}`;
   }
 }

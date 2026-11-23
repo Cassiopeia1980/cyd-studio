@@ -49,5 +49,3 @@ DEFAULT_OPTIONS: Final = {
 }
 
 HARDWARE_INFO_URL: Final = "https://mastershort.de/cyd-studio/hardware?src=cyd-studio"
-# donation page (PayPal etc. live on the website, so they can change without a release)
-SUPPORT_URL: Final = "https://mastershort.de/cyd-studio/unterstuetzen?src=cyd-studio"

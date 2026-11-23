@@ -11,6 +11,7 @@ jede Version ist ein GitHub-Release, das HACS als Update anbietet.
 - Neu: Option „API-Schlüssel in secrets.yaml“ (Standard an). Das YAML enthält `!secret api_key_<gerät>`, der Schlüssel
   wird beim Speichern in die `secrets.yaml` eingetragen.
 - Fix: Regeln mit Zustand „unavailable“/„unknown“ treffen nicht mehr (`strtof` statt `atof`).
+- Entfernt: Spenden-Link im Panel, PayPal-Hinweise in der README und `FUNDING.yml`; Dokumentations- und Issue-Links zeigen auf den Fork.
 - Fix: LVGL-9-konforme Enum-Casts (keine `-Wdeprecated-enum-enum-conversion`-Warnungen mehr).
 
 ## 1.0.4 – 2026-10-20

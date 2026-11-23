@@ -6,7 +6,6 @@
 [![Release](https://img.shields.io/github/v/release/Mastershort/cyd-studio)](https://github.com/Mastershort/cyd-studio/releases)
 [![Tests](https://github.com/Mastershort/cyd-studio/actions/workflows/tests.yml/badge.svg)](https://github.com/Mastershort/cyd-studio/actions/workflows/tests.yml)
 [![Validate](https://github.com/Mastershort/cyd-studio/actions/workflows/validate.yml/badge.svg)](https://github.com/Mastershort/cyd-studio/actions/workflows/validate.yml)
-[![Spenden / Donate](https://img.shields.io/badge/PayPal-Spenden%20%2F%20Donate-00457C?logo=paypal)](https://www.paypal.com/donate/?hosted_button_id=Z3G2VWKSK5VJL)
 
 **Dein Touch-Display-Dashboard für Home Assistant – zusammengeklickt statt programmiert.**
 *[English below](#english)*
@@ -120,7 +119,6 @@ Boards: [docs/BOARDS.md](docs/BOARDS.md) · Annahmen: [docs/ASSUMPTIONS.md](docs
 
 CYD Studio ist kostenlos und Open Source – und bleibt es. Wenn es dir Zeit spart:
 
-- ☕ [Spende per PayPal](https://www.paypal.com/donate/?hosted_button_id=Z3G2VWKSK5VJL) (auch ohne PayPal-Konto per Karte)
 - 🛒 Hardware über die Links oben kaufen – kostet dich nichts extra
 - ⭐ Stern auf GitHub und Screenshots deiner Dashboards in den [Issues](https://github.com/Mastershort/cyd-studio/issues)
 
@@ -189,7 +187,6 @@ support hints in the panel can be switched off in the integration options.
 
 CYD Studio is free and open source – and will stay that way. If it saves you time:
 
-- ☕ [Donate via PayPal](https://www.paypal.com/donate/?hosted_button_id=Z3G2VWKSK5VJL) (card works without a PayPal account)
 - 🛒 Buy hardware through the links above – no extra cost for you
 - ⭐ Star the repo and share screenshots of your dashboards in the [issues](https://github.com/Mastershort/cyd-studio/issues)
 

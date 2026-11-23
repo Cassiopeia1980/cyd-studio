@@ -3700,8 +3700,7 @@ class En extends ae {
         </div>`)}</div>` : y`<div class="empty">${d("no_projects")}<br /><br />
         <button class="primary" @click=${() => this.dispatchEvent(new CustomEvent("new-project", { bubbles: !0, composed: !0 }))}>+ ${d("new_project")}</button></div>`}
       ${this.info?.hardware_hints ? y`<div class="foot">
-        <a href=${this.info.hardware_info_url} target="_blank" rel="noopener">${d("where_to_buy")}</a> ·
-        <a href=${this.info.support_url} target="_blank" rel="noopener">♥ ${d("support_project")}</a>
+        <a href=${this.info.hardware_info_url} target="_blank" rel="noopener">${d("where_to_buy")}</a>
       </div>` : Y}`;
   }
 }
