@@ -25,7 +25,8 @@
           "hardware_hints": "Hinweise auf Hardware, Gehäuse & Unterstützung anzeigen",
           "esphome_path": "ESPHome-Verzeichnis (relativ zur Konfiguration)",
           "default_theme": "Standard-Theme für neue Projekte",
-          "preview_real_actions": "Echte Aktionen aus der Vorschau erlauben"
+          "preview_real_actions": "Echte Aktionen aus der Vorschau erlauben",
+          "api_key_as_secret": "API-Schlüssel in secrets.yaml statt im YAML"
         }
       }
     }

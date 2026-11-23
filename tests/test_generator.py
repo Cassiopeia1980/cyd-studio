@@ -234,3 +234,21 @@ def test_apply_design() -> None:
     assert out["pages"] == source["pages"] and out["theme"] == source["theme"]
     assert out.get("tile_style") == source.get("tile_style")
     assert target["pages"] != source["pages"]  # the input is not modified
+
+
+def test_api_key_as_secret(studio_data: dict[str, Any]) -> None:
+    """With api_key_secret the key stays out of the YAML and is referenced from secrets.yaml."""
+    from generator.generate import api_key_secret_name
+
+    project = golden("multipage")
+    project["settings"]["api_key"] = "GEHEIMER-SCHLUESSEL"
+    project["device_name"] = "labor-touch"
+    inline = generate_yaml(project, studio_data["boards"], studio_data["themes"], studio_data["widgets"])
+    assert "GEHEIMER-SCHLUESSEL" in inline.yaml
+    result = generate_yaml(
+        project, studio_data["boards"], studio_data["themes"], studio_data["widgets"], None, api_key_secret=True
+    )
+    assert result.ok
+    assert "GEHEIMER-SCHLUESSEL" not in result.yaml
+    assert api_key_secret_name("labor-touch") == "api_key_labor_touch"
+    assert load(result.yaml)["api"]["encryption"]["key"] == "!secret api_key_labor_touch"

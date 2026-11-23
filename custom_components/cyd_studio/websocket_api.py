@@ -15,10 +15,10 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.exceptions import Unauthorized
 
 from . import assets, esphome_files
-from .const import CONF_ESPHOME_PATH, CONF_REQUIRE_ADMIN, DOMAIN
+from .const import CONF_API_KEY_AS_SECRET, CONF_ESPHOME_PATH, CONF_REQUIRE_ADMIN, DEFAULT_OPTIONS, DOMAIN
 from .esphome_bridge import async_allow_actions, async_update_issues, device_status, find_device_entry
 from .generator import generate_yaml
-from .generator.generate import decode_project, split_generated
+from .generator.generate import api_key_secret_name, decode_project, split_generated
 from .runtime import StudioRuntime
 
 Handler = Callable[[HomeAssistant, ActiveConnection, dict[str, Any], StudioRuntime], Coroutine[Any, Any, None]]
@@ -356,7 +356,9 @@ async def ws_generate_yaml(
         project = {**project, "settings": {**project.get("settings", {}), "api_key": "<nur-fuer-administratoren>"}}
     known = set(hass.states.async_entity_ids())
     data = runtime.data
-    result = await hass.async_add_executor_job(generate_yaml, project, data.boards, data.themes, data.widgets, known)
+    result = await hass.async_add_executor_job(
+        generate_yaml, project, data.boards, data.themes, data.widgets, known, _api_key_as_secret(runtime)
+    )
     payload = result.as_dict()
     if result.ok and msg["mark_exported"] and project.get("id") and connection.user.is_admin:
         _, checksum = split_generated(result.yaml)
@@ -422,6 +424,10 @@ async def ws_esphome_allow_actions(
     async_allow_actions(hass, entry)
     async_update_issues(hass, runtime.store.all())
     connection.send_result(msg["id"], device_status(hass, entry.data.get("device_name", "")))
+
+
+def _api_key_as_secret(runtime: StudioRuntime) -> bool:
+    return bool(runtime.options.get(CONF_API_KEY_AS_SECRET, DEFAULT_OPTIONS[CONF_API_KEY_AS_SECRET]))
 
 
 def _esphome_dir(hass: HomeAssistant, runtime: StudioRuntime) -> str:
@@ -502,7 +508,9 @@ async def ws_esphome_save(
         return
     data = runtime.data
     known = set(hass.states.async_entity_ids())
-    result = await hass.async_add_executor_job(generate_yaml, project, data.boards, data.themes, data.widgets, known)
+    result = await hass.async_add_executor_job(
+        generate_yaml, project, data.boards, data.themes, data.widgets, known, _api_key_as_secret(runtime)
+    )
     if not result.ok:
         connection.send_result(msg["id"], {"status": "invalid", "issues": result.as_dict()["issues"]})
         return
@@ -524,6 +532,13 @@ async def ws_esphome_save(
     )
     _, checksum = split_generated(result.yaml)
     await runtime.store.async_mark_exported(project["id"], checksum or "")
+    if _api_key_as_secret(runtime) and project["settings"].get("api_key"):
+        # the YAML refers to the key by name: keep secrets.yaml in step with the project
+        await hass.async_add_executor_job(
+            esphome_files.set_secrets,
+            esphome_dir,
+            {api_key_secret_name(project["device_name"]): project["settings"]["api_key"]},
+        )
     secrets = await hass.async_add_executor_job(esphome_files.missing_secrets, esphome_dir)
     connection.send_result(
         msg["id"],

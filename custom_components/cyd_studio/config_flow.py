@@ -11,6 +11,7 @@ from homeassistant.core import callback
 from homeassistant.helpers import selector
 
 from .const import (
+    CONF_API_KEY_AS_SECRET,
     CONF_DEFAULT_THEME,
     CONF_ESPHOME_PATH,
     CONF_HARDWARE_HINTS,
@@ -70,6 +71,7 @@ class CydStudioOptionsFlow(OptionsFlow):
                 vol.Required(CONF_ESPHOME_PATH, default=current[CONF_ESPHOME_PATH]): str,
                 vol.Required(CONF_DEFAULT_THEME, default=current[CONF_DEFAULT_THEME]): str,
                 vol.Required(CONF_PREVIEW_REAL_ACTIONS, default=current[CONF_PREVIEW_REAL_ACTIONS]): bool,
+                vol.Required(CONF_API_KEY_AS_SECRET, default=current[CONF_API_KEY_AS_SECRET]): bool,
             }
         )
         return self.async_show_form(step_id="init", data_schema=schema)

@@ -107,6 +107,7 @@ class Context:
         self.board = board
         self.theme = theme
         self.widget_defs = widget_defs
+        self.api_key_secret = False
         self.fonts = FontCollector()
         self.sources: dict[tuple[str, str, str | None], Source] = {}
         self.time_updates: list[Any] = []

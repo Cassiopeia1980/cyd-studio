@@ -6,6 +6,7 @@ import base64
 import gzip
 import hashlib
 import json
+import re
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -124,12 +125,18 @@ def split_generated(text: str) -> tuple[str, str | None]:
     return body, rest.split("\n", 1)[0].strip()
 
 
+def api_key_secret_name(device_name: str) -> str:
+    """Name of the secrets.yaml entry that holds the API encryption key of a device."""
+    return "api_key_" + re.sub(r"[^a-z0-9_]", "_", device_name.lower())
+
+
 def generate_yaml(
     project: dict[str, Any],
     boards: dict[str, dict[str, Any]],
     themes: dict[str, dict[str, Any]],
     widget_defs: dict[str, dict[str, Any]],
     known_entities: set[str] | None = None,
+    api_key_secret: bool = False,
 ) -> GenerateResult:
     """Generate the ESPHome configuration for a project."""
     project = normalize(project)
@@ -140,6 +147,7 @@ def generate_yaml(
     board = resolve_board(boards[project["board"]], project.get("board_variant"), project["orientation"])
     theme = resolve_theme(themes[project["theme"]], project.get("theme_overrides"))
     ctx = Context(project, board, theme, widget_defs)
+    ctx.api_key_secret = api_key_secret
     doc = _document(ctx)
     body = _header_comment(ctx) + dump(doc)
     footer = CHECKSUM_PREFIX + body_checksum(body) + "\n"
@@ -208,6 +216,14 @@ def _header_comment(ctx: Context) -> str:
         "nächsten Export überschrieben.",
         "",
         "WLAN-Zugangsdaten kommen aus secrets.yaml (wifi_ssid, wifi_password).",
+        *(
+            [
+                f"Der API-Schlüssel kommt aus secrets.yaml ({api_key_secret_name(p['device_name'])}).",
+                "Beim Speichern in ESPHome wird er dort automatisch eingetragen.",
+            ]
+            if ctx.api_key_secret
+            else []
+        ),
         "In Home Assistant beim ESPHome-Gerät „Dem Gerät erlauben,",
         "Home-Assistant-Aktionen auszuführen“ aktivieren – sonst reagieren",
         "die Schalter nicht.",
@@ -256,7 +272,8 @@ def _document(ctx: Context) -> dict[Any, Any]:
     api: dict[str, Any] = {}
     api_key = s.get("api_key")
     if api_key:
-        api["encryption"] = {"key": api_key}
+        # api_key_secret: the key lives in secrets.yaml, not in the YAML (which gets copied and shared)
+        api["encryption"] = {"key": Secret(api_key_secret_name(p["device_name"])) if ctx.api_key_secret else api_key}
     if s.get("device_actions", True):
         api["actions"] = _device_actions(ctx, pages, brightness_day)
     doc["api"] = api or None

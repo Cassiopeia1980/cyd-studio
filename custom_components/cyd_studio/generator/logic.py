@@ -17,7 +17,8 @@ from .model import conditions_of, rules_of
 from .theme import hex_color
 
 RULE_COLOR_KEYS = ("bg", "border", "text", "icon")
-ANY = "(lv_style_selector_t) LV_PART_MAIN | (lv_style_selector_t) LV_STATE_ANY"  # every state (on, pressed, …); casts avoid the enum-mix warning
+# every state; the casts avoid the enum-mix warning
+ANY = "(lv_style_selector_t) LV_PART_MAIN | (lv_style_selector_t) LV_STATE_ANY"
 
 
 def cpp_condition(ctx: Context, cond: dict[str, Any]) -> tuple[str, str]:
@@ -32,8 +33,10 @@ def cpp_condition(ctx: Context, cond: dict[str, Any]) -> tuple[str, str]:
         number = float(cond["value"])
         cmp = ">" if op == "gt" else "<"
         # strtof with end check: "unavailable"/"unknown"/"" never match (atof would give 0.0)
-        return (f"([&]() {{ char *e = nullptr; const float v = strtof({s}.c_str(), &e); "
-                f"return e != {s}.c_str() && v {cmp} {number!r}f; }}())"), src.id
+        return (
+            f"([&]() {{ char *e = nullptr; const float v = strtof({s}.c_str(), &e); "
+            f"return e != {s}.c_str() && v {cmp} {number!r}f; }}())"
+        ), src.id
     value = cpp_str(str(cond.get("value", "")))
     return (f"({s} == {value})" if op == "eq" else f"({s} != {value})"), src.id
 

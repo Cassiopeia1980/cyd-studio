@@ -29,6 +29,7 @@ CONF_HARDWARE_HINTS: Final = "hardware_hints"
 CONF_ESPHOME_PATH: Final = "esphome_path"
 CONF_DEFAULT_THEME: Final = "default_theme"
 CONF_PREVIEW_REAL_ACTIONS: Final = "preview_real_actions"
+CONF_API_KEY_AS_SECRET: Final = "api_key_as_secret"  # noqa: S105
 
 DEFAULT_OPTIONS: Final = {
     CONF_REQUIRE_ADMIN: True,
@@ -38,6 +39,7 @@ DEFAULT_OPTIONS: Final = {
     CONF_ESPHOME_PATH: "esphome",
     CONF_DEFAULT_THEME: "mastershort_dark",
     CONF_PREVIEW_REAL_ACTIONS: False,
+    CONF_API_KEY_AS_SECRET: True,
 }
 
 HARDWARE_INFO_URL: Final = "https://mastershort.de/cyd-studio/hardware?src=cyd-studio"

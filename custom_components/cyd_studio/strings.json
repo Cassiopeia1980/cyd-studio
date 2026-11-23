@@ -25,7 +25,8 @@
           "hardware_hints": "Show hints about hardware, cases and support",
           "esphome_path": "ESPHome directory (relative to the configuration)",
           "default_theme": "Default theme for new projects",
-          "preview_real_actions": "Allow real actions from the preview"
+          "preview_real_actions": "Allow real actions from the preview",
+          "api_key_as_secret": "API key in secrets.yaml instead of in the YAML"
         }
       }
     }

@@ -66,16 +66,14 @@ def missing_secrets(esphome_dir: str) -> list[str]:
 
 
 def set_secrets(esphome_dir: str, values: dict[str, str]) -> None:
-    """Add or replace only the given WiFi keys in secrets.yaml, keeping everything else as it is."""
+    """Add or replace only the given keys in secrets.yaml (WiFi and API key), keeping everything else as it is."""
     path = Path(esphome_dir) / "secrets.yaml"
     text = path.read_text(encoding="utf-8") if path.is_file() else ""
     lines = text.splitlines()
-    for key in SECRET_KEYS:
-        if key not in values:
-            continue
-        line = f"{key}: {json.dumps(values[key], ensure_ascii=False)}"
+    for key, value in values.items():
+        line = f"{key}: {json.dumps(value, ensure_ascii=False)}"
         for i, existing in enumerate(lines):
-            if re.match(rf"^{key}\s*:", existing):
+            if re.match(rf"^{re.escape(key)}\s*:", existing):
                 lines[i] = line
                 break
         else:
