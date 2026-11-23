@@ -27,14 +27,20 @@ function valid(c: Condition, w: Widget): boolean {
   return true;
 }
 
-/** Same semantics as generator/logic.cpp_condition (state strings, atof for numbers). */
+/** Like strtof in the generated code: no number at the start ("unavailable", "") never matches. */
+function numeric(st: string): number {
+  const n = Number.parseFloat(st);
+  return Number.isNaN(n) ? Number.NaN : n;
+}
+
+/** Same semantics as generator/logic.cpp_condition (state strings, strtof for numbers). */
 export function evalCondition(c: Condition, w: Widget, state: Resolver): boolean {
   const st = state(String(c.entity || w.entity))?.state ?? "";
   switch (c.op) {
     case "on": return ON_STATES.includes(st);
     case "off": return !ON_STATES.includes(st);
-    case "gt": return st !== "" && (Number.parseFloat(st) || 0) > Number.parseFloat(String(c.value));
-    case "lt": return st !== "" && (Number.parseFloat(st) || 0) < Number.parseFloat(String(c.value));
+    case "gt": return numeric(st) > Number.parseFloat(String(c.value));
+    case "lt": return numeric(st) < Number.parseFloat(String(c.value));
     case "eq": return st === String(c.value ?? "");
     case "ne": return st !== String(c.value ?? "");
   }
