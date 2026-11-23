@@ -3,6 +3,16 @@
 Alle nennenswerten Änderungen an CYD Studio. Versionen folgen [SemVer](https://semver.org/lang/de/);
 jede Version ist ein GitHub-Release, das HACS als Update anbietet.
 
+## 1.0.5-fix2 – 2026-11-23 (Fork)
+
+- Neu: ESPHome Device Builder auf einem anderen Rechner. In den Optionen die Adresse (z. B. `http://192.168.2.33:6052`)
+  und bei Bedarf Benutzername und Passwort eintragen; „In ESPHome speichern“ überträgt dann das YAML per WebSocket.
+  Vorhandene Secrets werden nie überschrieben. Bilder lassen sich so nicht übertragen und werden als fehlend gemeldet.
+- Neu: Option „API-Schlüssel in secrets.yaml“ (Standard an). Das YAML enthält `!secret api_key_<gerät>`, der Schlüssel
+  wird beim Speichern in die `secrets.yaml` eingetragen.
+- Fix: Regeln mit Zustand „unavailable“/„unknown“ treffen nicht mehr (`strtof` statt `atof`).
+- Fix: LVGL-9-konforme Enum-Casts (keine `-Wdeprecated-enum-enum-conversion`-Warnungen mehr).
+
 ## 1.0.4 – 2026-10-20
 
 - Sicherheit: ESPHome-Geräte freischalten, YAML ins ESPHome-Verzeichnis schreiben und die WLAN-Zugangsdaten in der

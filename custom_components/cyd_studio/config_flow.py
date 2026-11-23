@@ -13,7 +13,10 @@ from homeassistant.helpers import selector
 from .const import (
     CONF_API_KEY_AS_SECRET,
     CONF_DEFAULT_THEME,
+    CONF_ESPHOME_PASSWORD,
     CONF_ESPHOME_PATH,
+    CONF_ESPHOME_URL,
+    CONF_ESPHOME_USER,
     CONF_HARDWARE_HINTS,
     CONF_PREVIEW_REAL_ACTIONS,
     CONF_REQUIRE_ADMIN,
@@ -72,6 +75,11 @@ class CydStudioOptionsFlow(OptionsFlow):
                 vol.Required(CONF_DEFAULT_THEME, default=current[CONF_DEFAULT_THEME]): str,
                 vol.Required(CONF_PREVIEW_REAL_ACTIONS, default=current[CONF_PREVIEW_REAL_ACTIONS]): bool,
                 vol.Required(CONF_API_KEY_AS_SECRET, default=current[CONF_API_KEY_AS_SECRET]): bool,
+                vol.Optional(CONF_ESPHOME_URL, default=current[CONF_ESPHOME_URL]): str,
+                vol.Optional(CONF_ESPHOME_USER, default=current[CONF_ESPHOME_USER]): str,
+                vol.Optional(CONF_ESPHOME_PASSWORD, default=current[CONF_ESPHOME_PASSWORD]): selector.TextSelector(
+                    selector.TextSelectorConfig(type=selector.TextSelectorType.PASSWORD)
+                ),
             }
         )
         return self.async_show_form(step_id="init", data_schema=schema)

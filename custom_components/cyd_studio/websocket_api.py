@@ -13,9 +13,19 @@ from homeassistant.components import websocket_api
 from homeassistant.components.websocket_api import ActiveConnection
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.exceptions import Unauthorized
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from . import assets, esphome_files
-from .const import CONF_API_KEY_AS_SECRET, CONF_ESPHOME_PATH, CONF_REQUIRE_ADMIN, DEFAULT_OPTIONS, DOMAIN
+from . import assets, esphome_dashboard, esphome_files
+from .const import (
+    CONF_API_KEY_AS_SECRET,
+    CONF_ESPHOME_PASSWORD,
+    CONF_ESPHOME_PATH,
+    CONF_ESPHOME_URL,
+    CONF_ESPHOME_USER,
+    CONF_REQUIRE_ADMIN,
+    DEFAULT_OPTIONS,
+    DOMAIN,
+)
 from .esphome_bridge import async_allow_actions, async_update_issues, device_status, find_device_entry
 from .generator import generate_yaml
 from .generator.generate import api_key_secret_name, decode_project, split_generated
@@ -383,8 +393,17 @@ async def ws_esphome_status(
     hass: HomeAssistant, connection: ActiveConnection, msg: dict[str, Any], runtime: StudioRuntime
 ) -> None:
     """Report whether the ESPHome Device Builder directory is available."""
-    path = hass.config.path(runtime.options.get(CONF_ESPHOME_PATH, "esphome"))
-    exists = await hass.async_add_executor_job(os.path.isdir, path)
+    remote = _dashboard(runtime)
+    if remote:
+        try:
+            await esphome_dashboard.check(async_get_clientsession(hass), *remote)
+            exists = True
+        except esphome_dashboard.DashboardError:
+            exists = False
+        path = remote[0]
+    else:
+        path = hass.config.path(runtime.options.get(CONF_ESPHOME_PATH, "esphome"))
+        exists = await hass.async_add_executor_job(os.path.isdir, path)
     connection.send_result(
         msg["id"],
         {
@@ -428,6 +447,15 @@ async def ws_esphome_allow_actions(
 
 def _api_key_as_secret(runtime: StudioRuntime) -> bool:
     return bool(runtime.options.get(CONF_API_KEY_AS_SECRET, DEFAULT_OPTIONS[CONF_API_KEY_AS_SECRET]))
+
+
+def _dashboard(runtime: StudioRuntime) -> tuple[str, str, str] | None:
+    """Address and login of an ESPHome Device Builder on another machine (None = use the directory)."""
+    url = str(runtime.options.get(CONF_ESPHOME_URL, "") or "").strip()
+    if not url:
+        return None
+    user = str(runtime.options.get(CONF_ESPHOME_USER, "") or "")
+    return url, user, str(runtime.options.get(CONF_ESPHOME_PASSWORD, "") or "")
 
 
 def _esphome_dir(hass: HomeAssistant, runtime: StudioRuntime) -> str:
@@ -480,6 +508,48 @@ async def ws_assets_get(
     connection.send_result(msg["id"], {"data_url": data})
 
 
+async def _save_remote(
+    hass: HomeAssistant,
+    connection: ActiveConnection,
+    msg: dict[str, Any],
+    runtime: StudioRuntime,
+    project: dict[str, Any],
+    yaml_text: str,
+    remote: tuple[str, str, str],
+) -> None:
+    """Save to an ESPHome Device Builder on another machine (same conflict rules as the directory)."""
+    session = async_get_clientsession(hass)
+    url, user, password = remote
+    name = project["device_name"]
+    try:
+        old = await esphome_dashboard.read_config(session, url, name, user, password)
+        existing = esphome_files.classify_existing(f"{url} → {name}.yaml", old, yaml_text)
+        if existing["state"] in ("foreign", "modified") and not msg["overwrite"]:
+            connection.send_result(msg["id"], {"status": "conflict", **existing})
+            return
+        secrets: dict[str, str] = {}
+        if _api_key_as_secret(runtime) and project["settings"].get("api_key"):
+            secrets[api_key_secret_name(name)] = project["settings"]["api_key"]
+        written = await esphome_dashboard.write_config(session, url, name, yaml_text, secrets, user, password)
+    except esphome_dashboard.DashboardError as err:
+        connection.send_error(msg["id"], "esphome_unreachable", str(err))
+        return
+    _, checksum = split_generated(yaml_text)
+    await runtime.store.async_mark_exported(project["id"], checksum or "")
+    known_secrets = set(written["secrets_known"])
+    connection.send_result(
+        msg["id"],
+        {
+            "status": "saved",
+            "path": existing["path"],
+            "backup": None,
+            "secrets_missing": [k for k in esphome_files.SECRET_KEYS if k not in known_secrets],
+            # pictures cannot be sent to a remote builder: they have to be copied there by hand
+            "missing_images": assets.used_assets(project),
+        },
+    )
+
+
 @websocket_api.websocket_command(
     {
         vol.Required("type"): "cyd_studio/esphome/save",
@@ -502,8 +572,9 @@ async def ws_esphome_save(
     if project is None:
         connection.send_error(msg["id"], "not_found", "Project not found")
         return
+    remote = _dashboard(runtime)
     esphome_dir = _esphome_dir(hass, runtime)
-    if not await hass.async_add_executor_job(os.path.isdir, esphome_dir):
+    if not remote and not await hass.async_add_executor_job(os.path.isdir, esphome_dir):
         connection.send_error(msg["id"], "no_esphome_dir", f"ESPHome directory not found: {esphome_dir}")
         return
     data = runtime.data
@@ -513,6 +584,9 @@ async def ws_esphome_save(
     )
     if not result.ok:
         connection.send_result(msg["id"], {"status": "invalid", "issues": result.as_dict()["issues"]})
+        return
+    if remote:
+        await _save_remote(hass, connection, msg, runtime, project, result.yaml, remote)
         return
     existing = await hass.async_add_executor_job(
         esphome_files.inspect_existing, esphome_dir, project["device_name"], result.yaml
@@ -566,10 +640,19 @@ async def ws_esphome_secrets_set(
     hass: HomeAssistant, connection: ActiveConnection, msg: dict[str, Any], runtime: StudioRuntime
 ) -> None:
     """Write wifi_ssid / wifi_password into the ESPHome secrets.yaml (nothing else is changed)."""
+    values = {"wifi_ssid": msg["wifi_ssid"], "wifi_password": msg["wifi_password"]}
+    remote = _dashboard(runtime)
+    if remote:
+        try:
+            await esphome_dashboard.set_secrets(async_get_clientsession(hass), remote[0], values, *remote[1:])
+        except esphome_dashboard.DashboardError as err:
+            connection.send_error(msg["id"], "esphome_unreachable", str(err))
+            return
+        connection.send_result(msg["id"], {"secrets_missing": []})
+        return
     esphome_dir = _esphome_dir(hass, runtime)
     if not await hass.async_add_executor_job(os.path.isdir, esphome_dir):
         connection.send_error(msg["id"], "no_esphome_dir", f"ESPHome directory not found: {esphome_dir}")
         return
-    values = {"wifi_ssid": msg["wifi_ssid"], "wifi_password": msg["wifi_password"]}
     await hass.async_add_executor_job(esphome_files.set_secrets, esphome_dir, values)
     connection.send_result(msg["id"], {"secrets_missing": []})

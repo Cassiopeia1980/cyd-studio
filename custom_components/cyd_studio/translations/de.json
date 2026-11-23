@@ -26,7 +26,10 @@
           "esphome_path": "ESPHome-Verzeichnis (relativ zur Konfiguration)",
           "default_theme": "Standard-Theme für neue Projekte",
           "preview_real_actions": "Echte Aktionen aus der Vorschau erlauben",
-          "api_key_as_secret": "API-Schlüssel in secrets.yaml statt im YAML"
+          "api_key_as_secret": "API-Schlüssel in secrets.yaml statt im YAML",
+          "esphome_url": "ESPHome-Adresse eines anderen Rechners (z. B. http://192.168.2.33:6052, leer = Verzeichnis nutzen)",
+          "esphome_user": "ESPHome-Benutzername (nur wenn der Builder eine Anmeldung verlangt)",
+          "esphome_password": "ESPHome-Passwort"
         }
       }
     }

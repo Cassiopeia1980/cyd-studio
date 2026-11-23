@@ -29,21 +29,26 @@ def config_path(esphome_dir: str, device_name: str) -> Path:
 def inspect_existing(esphome_dir: str, device_name: str, new_yaml: str) -> dict[str, Any]:
     """State of the target file: none / ours / modified (with diff) / foreign."""
     path = config_path(esphome_dir, device_name)
-    if not path.is_file():
-        return {"state": "none", "path": str(path)}
-    old = path.read_text(encoding="utf-8", errors="replace")
+    old = path.read_text(encoding="utf-8", errors="replace") if path.is_file() else None
+    return classify_existing(str(path), old, new_yaml)
+
+
+def classify_existing(path: str, old: str | None, new_yaml: str) -> dict[str, Any]:
+    """State of an existing configuration text (None = no file): none / ours / modified / foreign."""
+    if old is None:
+        return {"state": "none", "path": path}
     if CHECKSUM_PREFIX not in old:
-        return {"state": "foreign", "path": str(path)}
+        return {"state": "foreign", "path": path}
     body, checksum = split_generated(old)
     if checksum == body_checksum(body):
-        return {"state": "ours", "path": str(path)}
+        return {"state": "ours", "path": path}
     new_body, _ = split_generated(new_yaml)
     diff = list(
         difflib.unified_diff(
             new_body.splitlines(), body.splitlines(), "CYD Studio", "ESPHome (manuell geändert)", lineterm=""
         )
     )
-    return {"state": "modified", "path": str(path), "diff": "\n".join(diff[:MAX_DIFF_LINES])}
+    return {"state": "modified", "path": path, "diff": "\n".join(diff[:MAX_DIFF_LINES])}
 
 
 def write_config(esphome_dir: str, device_name: str, yaml_text: str, backup: bool) -> str | None:
