@@ -269,9 +269,7 @@ def test_log_level_and_static_ip(studio_data: dict[str, Any]) -> None:
         "subnet": "255.255.0.0",
         "dns": "192.168.2.5",
     }
-    doc = load(
-        generate_yaml(project, studio_data["boards"], studio_data["themes"], studio_data["widgets"]).yaml
-    )
+    doc = load(generate_yaml(project, studio_data["boards"], studio_data["themes"], studio_data["widgets"]).yaml)
     assert doc["logger"] == {"level": "INFO"}
     assert doc["wifi"]["manual_ip"] == {
         "static_ip": "192.168.1.25",
