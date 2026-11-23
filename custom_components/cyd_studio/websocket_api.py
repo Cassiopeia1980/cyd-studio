@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 from collections.abc import Callable, Coroutine
 from functools import wraps
@@ -30,6 +31,8 @@ from .esphome_bridge import async_allow_actions, async_update_issues, device_sta
 from .generator import generate_yaml
 from .generator.generate import api_key_secret_name, decode_project, split_generated
 from .runtime import StudioRuntime
+
+_LOGGER = logging.getLogger(__name__)
 
 Handler = Callable[[HomeAssistant, ActiveConnection, dict[str, Any], StudioRuntime], Coroutine[Any, Any, None]]
 
@@ -395,12 +398,14 @@ async def ws_esphome_status(
     """Report whether the ESPHome Device Builder directory is available."""
     remote = _dashboard(runtime)
     if remote:
+        path = remote[0]
         try:
             await esphome_dashboard.check(async_get_clientsession(hass), *remote)
             exists = True
-        except esphome_dashboard.DashboardError:
+        except esphome_dashboard.DashboardError as err:
             exists = False
-        path = remote[0]
+            _LOGGER.warning("ESPHome Device Builder %s: %s", remote[0], err)
+            path = f"{remote[0]} – {err}"  # the panel shows this next to "no ESPHome folder found"
     else:
         path = hass.config.path(runtime.options.get(CONF_ESPHOME_PATH, "esphome"))
         exists = await hass.async_add_executor_job(os.path.isdir, path)
