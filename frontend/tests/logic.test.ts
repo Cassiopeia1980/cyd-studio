@@ -11,7 +11,8 @@ describe("conditions", () => {
   it("numeric and state comparisons", () => {
     expect(evalCondition({ op: "gt", value: "25" }, w(), res)).toBe(true);
     expect(evalCondition({ op: "lt", value: "25" }, w(), res)).toBe(false);
-    expect(evalCondition({ entity: "sensor.x", op: "gt", value: "-1" }, w(), res)).toBe(true); // atof("unavailable") == 0
+    expect(evalCondition({ entity: "sensor.x", op: "gt", value: "-1" }, w(), res)).toBe(false); // "unavailable" is no number (strtof)
+    expect(evalCondition({ entity: "sensor.x", op: "lt", value: "40" }, w(), res)).toBe(false);
     expect(evalCondition({ entity: "sensor.missing", op: "gt", value: "-1" }, w(), res)).toBe(false); // empty state
     expect(evalCondition({ entity: "person.a", op: "eq", value: "home" }, w(), res)).toBe(true);
     expect(evalCondition({ entity: "light.l", op: "on" }, w(), res)).toBe(false);
