@@ -35,7 +35,7 @@ Textgrößen, Beschriftung ausblenden, Slider-Farben und Hintergrundbilder pro P
 zeigen, wenn …), Zustandsregeln (z. B. rot über 25 °C), Nachtmodus, Bildschirmschoner und
 Steuerung des Displays aus Home Assistant (Seite zeigen, Nachricht, Helligkeit, LED).
 
-Der erzeugte Code wird bei jeder Änderung mit ESPHome 2026.9 validiert und kompiliert und läuft auf
+Der erzeugte Code wird bei jeder Änderung mit ESPHome 2026.11 validiert und kompiliert und läuft auf
 dem ESP32-2432S028R. Alle Änderungen: [CHANGELOG.md](CHANGELOG.md).
 
 ## Installation
@@ -53,7 +53,7 @@ Home Assistant neu starten und das Panel einmal mit Strg+F5 neu laden. Projekte 
 geänderte Displays zeigen in der Projektliste „geändert seit letztem Export“.
 
 Voraussetzungen: Home Assistant 2026.x, für die Installation aufs Display der **ESPHome Device Builder**
-(Add-on) oder eine andere ESPHome-Installation ≥ 2026.9.
+(Add-on) oder eine andere ESPHome-Installation ≥ 2026.11.
 
 ## Hardware
 

@@ -6,7 +6,7 @@ getroffen wurden. **Bitte vor Phase 2 durchsehen.**
 
 ## Zielversion ESPHome
 
-- `ESPHOME_MIN_VERSION = 2026.9.0` (`generator/generate.py`, erscheint als `esphome: min_version`).
+- `ESPHOME_MIN_VERSION = 2026.11.0` (`generator/generate.py`, erscheint als `esphome: min_version`).
 - Verifiziert mit **ESPHome 2026.9.0** (pip): alle Golden Files bestehen `esphome config`;
   `multipage`, `edge_cases`, `portrait_st7789_en` und `reference_buttons` wurden zusätzlich mit
   `esphome compile` gebaut (ESP-IDF 5.5.5, LVGL 9.5.0). Beispiel `multipage`: RAM 29,6 %, Flash 67,1 %.

@@ -1,5 +1,5 @@
 # ======================================================================
-# Erzeugt von CYD Studio (Generator 0.8.0) – ESPHome >= 2026.9.0
+# Erzeugt von CYD Studio (Generator 0.8.0) – ESPHome >= 2026.11.0
 # Projekt: Steuerung · Board: ESP32-2432S028R (Cheap Yellow Display 2,8″)
 # Stand: 2026-09-24
 #
@@ -33,7 +33,7 @@ substitutions:
 esphome:
   name: "${device_name}"
   friendly_name: "${friendly_name}"
-  min_version: 2026.9.0
+  min_version: 2026.11.0
   on_boot:
     priority: -100
     then:
@@ -1871,26 +1871,27 @@ lvgl:
                         align: CENTER
                         styles: cyd_text_4
                         text: "\U000F04AD"
-# cyd_studio_checksum: 71689ce99a458b71
+# cyd_studio_checksum: af95f5b1e3b9716a
 
 # Projektdaten für den Import in CYD Studio (nicht bearbeiten)
-# cyd_studio_project: H4sIAAAAAAAC/61W247bNhD9FwJ98xpaObvY+jVFUaAoWjRF81AsCEocy4R5EXix4wR+yRf1G/op
-#   /ZLOkJIs7zrdDZAnWyRn5syZM+R8Yo0TXrI1g9Cv6pv6zaoOVf3g2aLs8L3wStjI1jZpvWAS9qoF
-#   boUBNGqP8qZ1NnqnA1p02jVCs/UntnEugqd/YEWjASNshA6wYFtQ3Rbdre4X7KBkBzGw9V+PJ9oR
-#   8olN9GlmUj/MTT4xoVVnEYWGTcTo8dgTpl50wKOKGthpcT7ks4/pVKtdu2OnxxMG7rySFLalLNZv
-#   cEH0bI3BeiGlsl3+790BN1d4nA6zzmkJdp68gSjIS+qliASe1VV9f1N9j6QiEjZQ9i5CAp/QKy3t
-#   VSeicpYMt84AJ/R4aqeVEXgibN2BK4wSRjLyihYN6PNSPGoyiqJpBFUuHBQlWXbLKu9dUCUSFjZG
-#   Z4gLL+y0GrSSgIsHL3ouvEt2LBqCd16BjQNUpoWVoRU9HSfApRxEI3d78J4cDXoh7GhhpFrHLXjj
-#   AnphA4ljlsryORUFtxZHlyJRTeWZ+Pt5sOmFh7MsMyujgIa8lQF0wMN4Zi4dNFXxmHWA7iIsD25r
-#   PypjgPjbotYGiC2F8q4PVKFMOy7+BOpjqaARH4oujULgd1QLQO2wanlHNZ/EloMQudkz2lQLhuEr
-#   UuiEJYANzi/7PdegQiwRZli6ORYJLTolEVSLCdhvf46YHqqqGlDhb7KKmHw/w9SJ1F0gqgdEj4Tp
-#   xVomC2MVQ1b0V5axtIH9hoUktEvsRe0Ka7cDPH+tgr/nc7MKkTUfuvmlOmm6SpZYgB1chgq312L9
-#   kA+eY+VG89eonwcxIJXgPdKHae0StNunweqriQmp3P8GKxndXgRTtkeCbTINBgvIzZNQq2uh3pVz
-#   WW6rUWy3Z7X98/fbV2R9CeQAgq6JJd2FlxgOcwhFJckomc1IJ6fpHsSLXPlWw7Q+IBh8P+eivtaF
-#   EUx/icB8sf2KLa/P1htI7TZ3/LC3Ou+1jio3svhHiZM/s4cfJ9OyRpZvf/3382d2wWz5yBbfjR90
-#   tO/NjHWTdFT4hut0pdfr1/W6SUG1Y7NnWX5lr/+CDnbfrtMvOuNL93Ym9Zlk359Pzzia+Xup9V/s
-#   StPXz4S6dzoREeNjOuk0wofID8N0g8+ylq+A9eJl0Qj5FNO8f18b4RbV8Yhmrk99HtEQOKaLjy85
-#   DhAjjkY5SdErvoPjWLQmj1oWQuBSkCN6iWaLdpjm7qZpUrSkonCWke1SmYPyRJINuHESynBYki7B
-#   Nh4nGRy16nVVZVmijuM0bAaXfEt+3GZD887WA1YEaV7XS5w/o6On+h5vL+LdQ0ze8jyGiQ2Or6RD
-#   uth81/A8jj6fZnN9aaRJYVbf1gO2utiXabZkR8koukIm1/f55pj7O5HiN6pwynFJNwKn1IGWFIAH
-#   QN9xYIpmV7zRco8Zgc+wRzg+Iut+x4atqbFz6U//AT8SIVLwCwAA
+# cyd_studio_project: H4sIAAAAAAAC/61W224bNxD9FwJ9k4X1KjZcPTa9AUXRommbh8IguMvRihAvC16kOIFe8kX9hn5K
+#   v6Qz5O5qZSu1A+TBsJbkzByeOTOcD6xxwku2ZhD6VX1Vv1rVoarvPFuUHb4XXgkb2domrRdMwl61
+#   wK0wgEbtg7xqnY3e6YAWnXaN0Gz9gW2ci+DpF1jRaMAIG6EDLNgWVLdFd6vbBTso2UEMbP3X/ZF2
+#   hHxkE32amdR3c5MPTGjVWUShYRMxenzoCVMvOuBRRQ3suDgd8tnHdKrVrt2x4/0RA3deSQrb0i3W
+#   r3BB9GyNwXohpbJd/u3dATdXeJwOs85pCXZ+eQNRkJfUSxEJPKur+vaq+hpJRSRsoOxNhAQ+oVda
+#   2qtOROUsGW6dAU7o8dROKyPwRNi6A1cYJYxk5BUtGtCnpfigySiKphGUuXBQdMmyW1Z574IqkTCx
+#   MTpDXHhhp9WglQRcPHjRc+FdsmPSELzzCmwcoDItrAyt6Ok4AS7pIBq524P35GjQC2FHCyPVOm7B
+#   GxfQCxtIHG+pLJ9TUXBr8eBSJKopPRN/Pw02vfBwkmVmZRTQcG9lAB3wMJ6ZSwdNVXzIOkB3EZYH
+#   t7XvlTFA/G1RawPElkJ51wfKUKYdF38E9b5k0Ih3RZdGIfAbygWgdli1vKGcT2LLQYjc7BltqgXD
+#   8BUpdMISwAbnl/2ea1AhlggzLN0ci4QWnZIIqsUE7Nc/R0x3VVUNqPB/soqYfDvD1InUnSGqB0T3
+#   hOnZXCYLYxZDVvRnprGUgf2CiSS0S6xF7Qpr1wM8fymDv+VzswyRNR+q+bk8aWolS0zADs5DhetL
+#   sb7NB0+xcqH5S9TPgxiQSvAe6cNr7RK028fB6osXE1K5/w1WbnR9FkzZHgm2yTQYLCA3j0KtLoV6
+#   U85lua1GsV2f1PbP369fcOtzIAcQ1CaW1AvPMRzmEIpKklEym5FOjlMfxEaufKthWh8QDL6fclFf
+#   qsIIpj9HYD5ZfsWW1yfrDaR2myt+2Fud9lpHmRtZ/L3EyZ/Zw/eTaVkjy9e//PvxIztjtnxki6/G
+#   Dzra92bGukk6KnzDdbpQ6/XLat2koNqx2LMsP7PWf0YHuy9X6WeV8am+nUl9Itm3p9Mzjmb+niv9
+#   Z6vS9PUToe6dTkTE+JhOOo3wLvLDMN3gs6zlC2A92ywaIR9jmtfvSyNcozru0cz1qc8jGgLH6+Lj
+#   S44DxIijUb6k6BXfwcOYtCaPWhZC4FKQI3qJZot2mOZupmlStKSicJKR7VKZg/JEol2HL+K+NNPv
+#   vvnjB5IWOeHGSSgDYyGiANh4nG5w/KrXVZWlitqO0wAaXPIt+XabDc1AWw+YJaR+XS9xJo2Onu9b
+#   7GiUCw8xecvzaCY2ONKSNqnZ+a7heUR9OuHmnNOYk8Is560HLH+xLxNuuTFdUFFbmVzf5m4y93ek
+#   KtiowjPHJd0InFwHqiSxxmj0xvniQGzTBwVXLVf98JkaC6Sw+uZmOf4RMykAD4DI4sA9TcPYI3PV
+#   GoEPu8fL+Ih59Ds2bE2tIovp+B9HYeVfQgwAAA==

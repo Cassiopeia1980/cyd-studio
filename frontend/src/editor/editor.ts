@@ -1265,7 +1265,15 @@ export class CydEditor extends LitElement {
         ${this.num(t("brightness_night"), s.brightness_night ?? 25, (v) => set((pp) => { pp.settings = { ...pp.settings, brightness_night: Math.max(0, Math.min(100, v ?? 25)) }; }), 0, 100)}
       </div>
       ${this.check(t("device_actions"), s.device_actions ?? true, (v) => set((pp) => { pp.settings = { ...pp.settings, device_actions: v }; }))}
-      ${this.check(t("rgb_led"), s.rgb_led?.enabled ?? false, (v) => set((pp) => { pp.settings = { ...pp.settings, rgb_led: { ...pp.settings?.rgb_led, enabled: v } }; }))}`;
+      ${this.check(t("rgb_led"), s.rgb_led?.enabled ?? false, (v) => set((pp) => { pp.settings = { ...pp.settings, rgb_led: { ...pp.settings?.rgb_led, enabled: v } }; }))}
+      <h3>${t("network")}</h3>
+      ${this.select(t("log_level"), s.log_level ?? "DEBUG", [["ERROR", "ERROR"], ["WARN", "WARN"], ["INFO", "INFO"], ["DEBUG", `DEBUG (${t("log_default")})`], ["VERBOSE", "VERBOSE"]],
+        (v) => set((pp) => { pp.settings = { ...pp.settings, log_level: v as NonNullable<Project["settings"]>["log_level"] }; }))}
+      ${this.text(t("static_ip"), s.wifi?.static_ip ?? "", (v) => set((pp) => { pp.settings = { ...pp.settings, wifi: { ...pp.settings?.wifi, static_ip: v.trim() } }; }))}
+      ${s.wifi?.static_ip ? html`
+        ${this.text(t("gateway"), s.wifi?.gateway ?? "", (v) => set((pp) => { pp.settings = { ...pp.settings, wifi: { ...pp.settings?.wifi, gateway: v.trim() } }; }))}
+        ${this.text(t("subnet"), s.wifi?.subnet ?? "255.255.255.0", (v) => set((pp) => { pp.settings = { ...pp.settings, wifi: { ...pp.settings?.wifi, subnet: v.trim() } }; }))}
+        ${this.text(t("dns"), s.wifi?.dns ?? "", (v) => set((pp) => { pp.settings = { ...pp.settings, wifi: { ...pp.settings?.wifi, dns: v.trim() } }; }))}` : nothing}`;
   }
 }
 

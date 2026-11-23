@@ -64,8 +64,7 @@ def apply_logic(ctx: Context, wid: str, widget: dict[str, Any], emitted: list[di
     if conds:
         parts = [cpp_condition(ctx, c) for c in conds]
         expr = " && ".join(p for p, _ in parts)
-        code = (f"if ({expr}) lv_obj_remove_flag(id({wid}), LV_OBJ_FLAG_HIDDEN);\n"
-                f"else lv_obj_add_flag(id({wid}), LV_OBJ_FLAG_HIDDEN);")  # fmt: skip
+        code = f"lv_obj_set_hidden(id({wid}), !({expr}));"
         for source_id in dict.fromkeys(sid for _, sid in parts):
             _source_by_id(ctx, source_id).actions.append({"lambda": Lambda(code)})
 

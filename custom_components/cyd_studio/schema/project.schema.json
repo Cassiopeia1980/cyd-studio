@@ -147,8 +147,29 @@
             },
             "ap_fallback": {
               "type": "boolean"
+            },
+            "static_ip": {
+              "type": "string"
+            },
+            "gateway": {
+              "type": "string"
+            },
+            "subnet": {
+              "type": "string"
+            },
+            "dns": {
+              "type": "string"
             }
           }
+        },
+        "log_level": {
+          "enum": [
+            "ERROR",
+            "WARN",
+            "INFO",
+            "DEBUG",
+            "VERBOSE"
+          ]
         },
         "language": {
           "enum": [

@@ -3,6 +3,13 @@
 Alle nennenswerten Änderungen an CYD Studio. Versionen folgen [SemVer](https://semver.org/lang/de/);
 jede Version ist ein GitHub-Release, das HACS als Update anbietet.
 
+## 1.0.5-fix3 – 2026-11-23 (Fork)
+
+- Neu: Im Editor unter „Netzwerk & Protokoll“ lassen sich der Log-Level des Geräts (ERROR bis VERBOSE) und eine feste
+  IP-Adresse (mit Gateway, Subnetzmaske, optional DNS) einstellen. Ohne Eingabe bleibt alles wie bisher (DHCP, ESPHome-Standard-Log-Level).
+- Geändert: Mindestversion ist jetzt ESPHome 2026.11.0. Das Ein- und Ausblenden nutzt `lv_obj_set_hidden`
+  statt der veralteten `lv_obj_add_flag`/`lv_obj_remove_flag` (keine Compiler-Warnungen mehr).
+
 ## 1.0.5-fix2 – 2026-11-23 (Fork)
 
 - Neu: ESPHome Device Builder auf einem anderen Rechner. In den Optionen die Adresse (z. B. `http://192.168.2.33:6052`)

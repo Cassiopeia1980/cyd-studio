@@ -252,3 +252,45 @@ def test_api_key_as_secret(studio_data: dict[str, Any]) -> None:
     assert "GEHEIMER-SCHLUESSEL" not in result.yaml
     assert api_key_secret_name("labor-touch") == "api_key_labor_touch"
     assert load(result.yaml)["api"]["encryption"]["key"] == "!secret api_key_labor_touch"
+
+
+def test_log_level_and_static_ip(studio_data: dict[str, Any]) -> None:
+    """log_level and a fixed IP end up in the YAML; the defaults leave both untouched."""
+    base = golden("multipage")
+    default = generate_yaml(base, studio_data["boards"], studio_data["themes"], studio_data["widgets"])
+    assert load(default.yaml)["logger"] is None
+    assert "manual_ip" not in load(default.yaml)["wifi"]
+
+    project = golden("multipage")
+    project["settings"]["log_level"] = "INFO"
+    project["settings"]["wifi"] = {
+        "static_ip": "192.168.1.25",
+        "gateway": "192.168.1.1",
+        "subnet": "255.255.0.0",
+        "dns": "192.168.2.5",
+    }
+    doc = load(
+        generate_yaml(project, studio_data["boards"], studio_data["themes"], studio_data["widgets"]).yaml
+    )
+    assert doc["logger"] == {"level": "INFO"}
+    assert doc["wifi"]["manual_ip"] == {
+        "static_ip": "192.168.1.25",
+        "gateway": "192.168.1.1",
+        "subnet": "255.255.0.0",
+        "dns1": "192.168.2.5",
+    }
+
+    project["settings"]["wifi"] = {"static_ip": "192.168.1.25"}  # gateway missing
+    bad = generate_yaml(project, studio_data["boards"], studio_data["themes"], studio_data["widgets"])
+    assert "manual_ip" not in load(bad.yaml)["wifi"]
+    assert any(i.code == "static_ip_invalid" for i in bad.issues)
+
+
+def test_no_deprecated_lvgl_flags(studio_data: dict[str, Any]) -> None:
+    """ESPHome >= 2026.11 (LVGL 9.5): visibility goes through lv_obj_set_hidden."""
+    for name in ("multipage", "logic", "controls"):
+        yaml_text = generate_yaml(
+            golden(name), studio_data["boards"], studio_data["themes"], studio_data["widgets"]
+        ).yaml
+        assert "lv_obj_add_flag" not in yaml_text
+        assert "lv_obj_remove_flag" not in yaml_text

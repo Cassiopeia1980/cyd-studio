@@ -81,7 +81,8 @@ export interface Project {
     screensaver?: { enabled?: boolean; after_s?: number; action?: string };
     return_home_after_s?: number | null;
     rgb_led?: { enabled?: boolean; show_status?: boolean };
-    wifi?: { use_secrets?: boolean; ap_fallback?: boolean };
+    wifi?: { use_secrets?: boolean; ap_fallback?: boolean; static_ip?: string; gateway?: string; subnet?: string; dns?: string };
+    log_level?: "ERROR" | "WARN" | "INFO" | "DEBUG" | "VERBOSE";
     language?: "de" | "en";
     api_key?: string | null;
     device_actions?: boolean;

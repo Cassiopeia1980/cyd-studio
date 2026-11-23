@@ -1,5 +1,5 @@
 # ======================================================================
-# Erzeugt von CYD Studio (Generator 0.8.0) – ESPHome >= 2026.9.0
+# Erzeugt von CYD Studio (Generator 0.8.0) – ESPHome >= 2026.11.0
 # Projekt: SmartDisplay · Board: ESP32-2432S028R (Cheap Yellow Display 2,8″)
 # Stand: 2026-09-24
 #
@@ -25,7 +25,7 @@ substitutions:
 esphome:
   name: "${device_name}"
   friendly_name: "${friendly_name}"
-  min_version: 2026.9.0
+  min_version: 2026.11.0
   on_boot:
     priority: -100
     then:
@@ -516,12 +516,10 @@ script:
           snprintf(buf, sizeof(buf), "%d°", (int) lroundf(hue));
           lv_label_set_text(id(cyd_li_hue_value), buf);
           for (lv_obj_t *o : {id(cyd_li_ct_icon), id(cyd_li_ct), id(cyd_li_ct_value)}) {
-            if (has_ct) lv_obj_remove_flag(o, LV_OBJ_FLAG_HIDDEN);
-            else lv_obj_add_flag(o, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_set_hidden(o, !(has_ct));
           }
           for (lv_obj_t *o : {id(cyd_li_hue_icon), id(cyd_li_hue), id(cyd_li_hue_value)}) {
-            if (has_hs) lv_obj_remove_flag(o, LV_OBJ_FLAG_HIDDEN);
-            else lv_obj_add_flag(o, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_set_hidden(o, !(has_hs));
           }
       - lvgl.widget.show: cyd_light
   - id: cyd_update_time
@@ -1264,22 +1262,23 @@ lvgl:
                   long_mode: DOT
                   styles: cyd_text_4
                   text: Ambient
-# cyd_studio_checksum: a567fc5d4c4e960c
+# cyd_studio_checksum: 72fd57c5e0444236
 
 # Projektdaten für den Import in CYD Studio (nicht bearbeiten)
-# cyd_studio_project: H4sIAAAAAAAC/51VTY/bNhD9LzzbgSxt3ayAHtoskLRAg6IfaItiIYykkcyaIgmSsnez8H/PDEXJ
-#   dhP3sDdhxJl5897w8UXUBlwrSoHeFvk6vytyn+VvnVhNf6oDOAk6iFKPSq1EiwfZYKVhQEryA7jQ
-#   Sm8VPFNGr0wNSpQvojMmoOMv1FArpA4dKI8rsUPZ76hcsV2Jo2x7DF6U/zye+A+0/5+Tv73MeRGg
-#   ZK8JhsIuUPvwbBmUhR6rIINCcVqdD7lYYznVKNPsxenxRJ17J1vu2xhFhe8oAFaU1MxC20rdx29n
-#   jvSzoON8WPRGtajXDjt0qBtc12MIRnvqMGAALjfaFgKPIfIs366ze6KXIIlE3m9M3sNCnoaD7CFI
-#   ozl3ZwaseBIej5D6xiFqOuZ35ljJhjuVwY2YIgpqVOdQeFacqY1GzjlKnjmxGaCuwVXWeDl1I6UJ
-#   +sDcONBL1CvZcvbRga3AmVHPitAMxknUIcEVCnTrG7B8nEFP8jCtlTmgc1woLRBDp4yhlWVUINF5
-#   NaPU1SUb00zEkhkDM89qnVm0VL+WivrvpBsiABJkWdjIzrxaU6UgB6RSlZ/PXO4UpcrwPP/Z0dIl
-#   hE2Ca52xftpxNwAD+vChHIZZGpZ8kUF+YohPT4plv1o8aho37UmU2UpQv4x3dW4uFC/rmxb9npQd
-#   rIhINglJHfTmEsgFpZyxThlxJSj+QLEZnQ8R3qxighRM3yu+MwonYJsLYPlXgDUoFd2LSqU7dQ0u
-#   vwEuZa3nrBnguyn+KoybmxjZjPDr7BU3AMaUL+C95+irwOU3wcFQ8/25QeDdDXzkiWsfnLTr2ZXP
-#   KL+fKr4KZ5FwPp4eqbGxo42eTKWaHQ4Qj3kMgUSKkMDKao88zaf3w2b8Mfu9+Ln17/582P399NN9
-#   KORf2cf7fffvx2/V9oc/9nf7Xza/mu/4SYkmrNF7uieUv8myq6BOPv/N8tBAwx7gzyag+3FyxehN
-#   MaEaDPvLf+9u58jTyHvzMsuiqZAThcUFvRldw3VM17Hz7RwScYoUyN/Q0xQM/cq2ZZHx1XUYRqer
-#   aMrQ0cvG3kHQXV9X8aH68s1aVBj9WYbJ4TwcpnduGo5nkewfS+Utlb6ud2KT6uREfkUhVQO5SGJl
-#   9Fh5pNohEcWPWiDpeL4BPJUlOC4Q6W4v0q/FmVnS0+kzFiGBlwoIAAA=
+# cyd_studio_project: H4sIAAAAAAAC/51VUW/bNhD+L3y2A1lK3EbAHtpmSDegRdGt2IYiICjpJHOmSIKk7KSB/3vvKEq2
+#   13oPeTAgH3l33313/O6ZVUa4hpUMvC3yZX5d5D7LXzu2GE/4TjgpdGClHpRasAZ2sgauRQ/o5Hvh
+#   QiO9VeIJPTplKqFY+cxaYwI4+gItKgWYoRXKw4JtQHYbDFesF2wvmw6CZ+XXhwOdiOb/ffLXpz7P
+#   TCjZaYShoA2YPjxZAmVFBzzIoIAdFsdLLsaYb9XK1Ft2eDhg5s7JhvLWRmHgazQIy0pMZkXTSN3F
+#   b2f2eFjgdbrMOqMa0EsHLTjQNSyrIQSjPWboIQgKN9hGBCqD5Vm+Xma3SC9CYom8P4i8u5k8LXay
+#   E0EaTb4b0wOnSqg8ROprB6Dxmt+YPZc1ZSqDGyBZlKhAHU3hSZGnNhrIZy+p5sRmEFUlHLfGyzEb
+#   dhqh98SNE3q2eiUb8t47YblwZtBTR7AG4yTokOAyJXTja2HpOoEe20O0crMD5yhQGiCCjh59I8vY
+#   gUTnWY1S81M2xpqQJTMEYp66dWTRYvxKKsy/ka6PALAh88BGdqbRGiMF2QOG4n66czpT6CrD03Sy
+#   waFLCOsE1zpj/TjjrhcE6P37su+n1lDL5zbIbwTx8VFR288GD5PGSXtkZbZgmC+jWZ2SM0XDetWA
+#   32Jne8siklVCUgW9OgVyQil5LJNHHAm036FtQudDhDd1MUEKpusUvRkFI7DVCbD8J8BqkArfBVfp
+#   TZ2Dyy+AS17LyWsC+G60vwjj6iJGEiP4OXvFBYDR5Qd492R9Ebj8IjjRV/R+LhB4fQEfauLSByft
+#   clLlI8o3Y8QX4SwSzofDAyY2drBRkzFUvYFexGseQsAmRUjCSr4Fqubbfb8afsv+LD40/t1fd5t/
+#   Hn+/DYX8O/t4u23//fhKrd9+2V5vP60+m19opUQR1uA9vhP0X2XZmVEnnb+ZF42oSQP8UQR0N4yq
+#   GLVJGRxC2I1z/uvbL/ckDBSE94Y057/vuXWoc6jHeZllUWhQncKsjN4MrqbYpm1JDTcOkEyFXcmv
+#   cF0Fg0fZuiwyes4OwuA0j0ItWtx2pCdYjusqHpfXj3ts7szgj60ZVc+L3bj7xoKpPkmaMkdeY+jz
+#   eAcSrlaODeFoUpVAZUlMNUQao6WMg7AnsukPJZc1lzb9HSoNJGH5zc3V9CNiBg/cAyILiXpakwGH
+#   gdjphUdQWIwL2Ea3Zelo1noaksPhOygswHdcCAAA

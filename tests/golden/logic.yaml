@@ -1,5 +1,5 @@
 # ======================================================================
-# Erzeugt von CYD Studio (Generator 0.8.0) – ESPHome >= 2026.9.0
+# Erzeugt von CYD Studio (Generator 0.8.0) – ESPHome >= 2026.11.0
 # Projekt: Regeln · Board: ESP32-2432S028R (Cheap Yellow Display 2,8″)
 # Stand: 2026-09-24
 #
@@ -30,7 +30,7 @@ substitutions:
 esphome:
   name: "${device_name}"
   friendly_name: "${friendly_name}"
-  min_version: 2026.9.0
+  min_version: 2026.11.0
   on_boot:
     priority: -100
     then:
@@ -382,19 +382,16 @@ text_sensor:
     on_value:
       then:
         - lambda: !lambda |-
-            if ((id(ha_person_anna).state == "home") && ([&]() { char *e = nullptr; const float v = strtof(id(ha_sensor_lux).state.c_str(), &e); return e != id(ha_sensor_lux).state.c_str() && v < 50.0f; }())) lv_obj_remove_flag(id(w_home_g), LV_OBJ_FLAG_HIDDEN);
-            else lv_obj_add_flag(id(w_home_g), LV_OBJ_FLAG_HIDDEN);
+            lv_obj_set_hidden(id(w_home_g), !((id(ha_person_anna).state == "home") && ([&]() { char *e = nullptr; const float v = strtof(id(ha_sensor_lux).state.c_str(), &e); return e != id(ha_sensor_lux).state.c_str() && v < 50.0f; }())));
         - lambda: !lambda |-
-            if ((id(ha_person_anna).state != "home")) lv_obj_remove_flag(id(w_home_w), LV_OBJ_FLAG_HIDDEN);
-            else lv_obj_add_flag(id(w_home_w), LV_OBJ_FLAG_HIDDEN);
+            lv_obj_set_hidden(id(w_home_w), !((id(ha_person_anna).state != "home")));
   - platform: homeassistant
     id: ha_sensor_lux
     entity_id: "${ent_sensor_lux}"
     on_value:
       then:
         - lambda: !lambda |-
-            if ((id(ha_person_anna).state == "home") && ([&]() { char *e = nullptr; const float v = strtof(id(ha_sensor_lux).state.c_str(), &e); return e != id(ha_sensor_lux).state.c_str() && v < 50.0f; }())) lv_obj_remove_flag(id(w_home_g), LV_OBJ_FLAG_HIDDEN);
-            else lv_obj_add_flag(id(w_home_g), LV_OBJ_FLAG_HIDDEN);
+            lv_obj_set_hidden(id(w_home_g), !((id(ha_person_anna).state == "home") && ([&]() { char *e = nullptr; const float v = strtof(id(ha_sensor_lux).state.c_str(), &e); return e != id(ha_sensor_lux).state.c_str() && v < 50.0f; }())));
 
 button:
   - platform: restart
@@ -532,12 +529,10 @@ script:
           snprintf(buf, sizeof(buf), "%d°", (int) lroundf(hue));
           lv_label_set_text(id(cyd_li_hue_value), buf);
           for (lv_obj_t *o : {id(cyd_li_ct_icon), id(cyd_li_ct), id(cyd_li_ct_value)}) {
-            if (has_ct) lv_obj_remove_flag(o, LV_OBJ_FLAG_HIDDEN);
-            else lv_obj_add_flag(o, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_set_hidden(o, !(has_ct));
           }
           for (lv_obj_t *o : {id(cyd_li_hue_icon), id(cyd_li_hue), id(cyd_li_hue_value)}) {
-            if (has_hs) lv_obj_remove_flag(o, LV_OBJ_FLAG_HIDDEN);
-            else lv_obj_add_flag(o, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_set_hidden(o, !(has_hs));
           }
       - lvgl.widget.show: cyd_light
   - id: cyd_update_time
@@ -1330,28 +1325,29 @@ lvgl:
                   long_mode: DOT
                   styles: cyd_text_7
                   text: "Zurück"
-# cyd_studio_checksum: bec4ba72664ad546
+# cyd_studio_checksum: 287ff49863dc89a1
 
 # Projektdaten für den Import in CYD Studio (nicht bearbeiten)
-# cyd_studio_project: H4sIAAAAAAAC/51Wy27rNhD9lQt26wSy4wSpty3aru6i6KpFQIykkUyEIlWSsuMb+J/6AV21P9YZ
-#   ipLpR1rcZhOZwxnOnDOvd1FacLXYCPT9w+putX5Y+WL17MRilMgdOAUmiI0ZtF6IGneqQmmgQ1Kq
-#   DvWdtq2q6HqrbQlabN5FY21Ax19ooNRI5hvQHhdii6rdkq2Hp4XYq7rF4MXmt5cjS6C+0AluyFRW
-#   z7nKuwCtWkMuaGwCvR4OPTvUQ4syqKBRHBenSy7amG9V2lav4vhypIdbp2p+trKaDK/pAHqxocd6
-#   qGtl2vjt7J6ED3SdL4vW6hrNHHmHAdjE0NcQ2HOxKlZPd8W3BCe5IRJYP2OL2gj+vVMtBGUNa21t
-#   h5L9piv8TRf81u6lqqzxEwrxREOJ+nQUDpp1jDVRZ684tlEWoCzByd56NT5DZIZgO4bAgZlPvVY1
-#   K+8d9BKcHczEFbltnUITkp9Cg6l9BT1fZ29HFhg9aXfoHBtKOcKek0ZXq02jNKdCwi2Fp4zMIRhd
-#   1nCwQ2BwmZBr0HpweErDiMeUMylm1SFZkH66k2cLqapw4IjReOvuA3Y9Gd2KzTL5xunRO9t75iSL
-#   IGzRdeT3GEakgCS/kD46CAMfDkax43/98R2zHXmRbtAJotK66KX4Bps1/YkZoNOB7TnwmKH4Fs5E
-#   O9ADA7F6jBk9qT48l3XzPKnqXHUWTarLZ8p1ToqeY4OKYb+ARXOB3Dc6xpOqJNi2TXXUcfYXxSyq
-#   keiKkpS4NZWA0ud1yAU2H4y4y9El4oYKeiHexIZs0vsFm6rtQIUvb7jp0XHXYTMVGrwn2I20nBUB
-#   HHE8C4gdU4vs0VEvOnI71iwD2H1tTSt7h95f+jAFZvuhHw3eypZouxx0meXKD/zSrcRoma0lLss1
-#   X5/9K5UBd5ApUw1UsXVFnumdyGROELU7fQbp6gTpBzYb+jfmcxY+/Gv41Nlij4vjoIwh0FscVcaN
-#   U324TU6UvGrqp6hv8LOY8Y0tIkusVpXBG1Vtw63kukXBXpna7u9sjyYnIYX8IQ/rxwIKuA10Qo8M
-#   qwqCddcJvIzTppp6+leA0g6BxykHmCXp2MEydtoP2tMegTvUnUkTbor3RzL76fNkdsKbi0SWA40C
-#   dmWnvOKKU815M6DO5q25B2NmPPD3rJ/MHF12VT28nXWkSeGxiGheZOgyN3EV8D4P2KsvbKc7dbnP
-#   CjuaSJ++DJ9+gsFjFuUIwVeFFyfoeXijv+uM4xWn3H+PPGUa67pxtqVY5u54MfnSVvTB6Pt+0ppG
-#   39l68D+G3xXGZY5xAvbXwf39J29HNwfGVBAw7k9XmF/19RcGMjbNuOmR89WWmIs+eAyBOsLYa3ol
-#   X3F2sowbm6FGJGvgXOHhkx2atBQ+zhvp7OW0Tph2mGYTY8oKsrNM2SUijaPNiCbsalMUkSQiN8zs
-#   eDu4WMq2aTj/ttQet7QA0uv3tMYGS6LiicYjQ+YwVnrc6aChhiPj5CRBW8q41V4vxZFOT4vW4E/L
-#   F3UHpKKC3bgUT61F1IqLYDb9VCwu7B2Z+0aNmEo60pGsBAtVCg0Bsh0SUrwCUwOJCdcBt0hyxwVC
-#   3b2KJJqznZk6Hv8BRYWxKjQMAAA=
+# cyd_studio_project: H4sIAAAAAAAC/51WzW7jNhB+lYC92oYs20Hq43bb7WkPRXtpERCUNJKJUKRKUna8gd+pD9BT+2Kd
+#   oSiZ/kmLbQAjNocznPm++XtjhRG2YlsGrlvl83y9yl2WP1k2GyR8L6wU2rOt7pWasQr2sgSuRQuo
+#   VB6ruTKNLPF6o0whFNu+sdoYD5a+gRaFAjRfC+VgxnYgmx3aWj3O2EFWDXjHtr89n0giqisdb/tE
+#   JX9KVd6YULLR6IKC2uPr/tiRQ51ogHvpFbDT7HzJBhvTrVKZ8oWdnk/4cGNlRc+WRqHhNR6Ijm3x
+#   sU5UldRN+G7NAYUrvE6XWWNUBXqKvAUvyETfVcKT5yzP8sd59i3CiW6wCNZP0IDSjH7vZSO8NJq0
+#   dqYFTn7jFfqOF9zOHLgsjXYjCuFEiQLU+cgfFeloo4POQVJsg8yLohCWd8bJ4Rkk03vTEgRW6OnU
+#   KVmR8sGKjgtrej1yhW4bK0H76CdTQleuFB1dJ28HFgg9bvZgLRmKOUKeo0ZbyW0tFaVCxC2GJzVP
+#   IRhcVuJoek/gEiG3oHXCwjkNAx5jzsSYZQtogbvxTpotqCr9kSIG7YxdeGg7NLpj22X0jdKjs6Zz
+#   xEkSgd+BbdHvIYxAAUp+Rn2wwvd02GtJjv/1x3fEduCF215FiApjg5fsG6jX+McmgM4HpqPAQ4bC
+#   q78Q7YXqCYh8EzJ6VF09FVX9NKqqVHUSjarLJ8x1SoqOYhMlwX4Fi6ICWdQqxBOrxJumiXXUUvZn
+#   2SSqAOkKkpi4FZaAVJd1SAU2HQy488El5AYLesZe2RZt4vsZmapMj4XP77jpwFLXITMlaFgg7Job
+#   ygovLHI8CZAdXbHk0UEvOHI/1iQDyH1ldMM7C85d+zAGZrq+Gwzey5Zgu+hVkeTKD/TSvcRoiK0l
+#   LIs1XZ/8K6QW9shjpmpRhtYVeMZ3ApMpQdju1AWk+RnSd2zW+G/I5yR88a/hY2cLPS6MgyKEgG9R
+#   VAk3Vnb+PjlB8qKwn4K6w89swje0iCSxGll4p2W58/eS6x4FB6krc5ibDnRKQgz5XR7Wm0xk4j7Q
+#   ET00LEvhjb1N4GWYNuXY078ClKb3NE4pwCRJhw6WsNO8054OIKhDzXWccGO8n9Dsw+fR7Ig3FQkv
+#   ehwF5MpeOkkVJ+vLZoCdzRm9EFpPeMDvST+ZOLruqqp/vehIo8ImC2heZegyNXET8CEN2MkvZKc9
+#   d7nPElqcSA9f+ocfRe8giXKA4KvCCxP0MrzB33XCcU4p998jT+ra2HaYbTGWqTteTb64Fb0z+j6O
+#   WuPou1gP/sfwu8G4SDGOwP7a27//pO3o7sAYC0IM+9MN5jd9/ZmADE0zbHrofLlD5oIPDrzHjjD0
+#   mk7yF5icLMLGprER8UpQrtDwSQ51XAo300Y6eTmuE7rpx9kUOlvDFexDbXz8/sMvnwhnMsJbQzRe
+#   o1Rb3JZw6ubbLAvEIeF+YsyZ3obyNnVNObnDlrnDpRA9WuBq6w2KskccmQSjhVD9Yc8TNTYhHqYp
+#   CpqCh033dlEOFDtcvnp3XsiwYwAWmtgPi/LYblglqTAm04/Z7MreifKhlgPOHI9UIDBCVRFqjDZ4
+#   3F4PhDb9oMdlyWUXf/aFDm0r32wW44eQwdrDsYKe+Yg9LdXYkkIKt4KaLgZjPfJoX1gUTfVD3J9O
+#   /wAWdLNfhgwAAA==

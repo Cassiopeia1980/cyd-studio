@@ -1,5 +1,5 @@
 # ======================================================================
-# Erzeugt von CYD Studio (Generator 0.8.0) – ESPHome >= 2026.9.0
+# Erzeugt von CYD Studio (Generator 0.8.0) – ESPHome >= 2026.11.0
 # Projekt: Hallway · Board: ESP32-2432S028R (Cheap Yellow Display 2,8″)
 # Stand: 2026-09-24
 #
@@ -25,7 +25,7 @@ substitutions:
 esphome:
   name: "${device_name}"
   friendly_name: "${friendly_name}"
-  min_version: 2026.9.0
+  min_version: 2026.11.0
   on_boot:
     priority: -100
     then:
@@ -906,26 +906,27 @@ lvgl:
                   long_mode: DOT
                   styles: cyd_text_9
                   text: Service
-# cyd_studio_checksum: 12f02788cb98ab2c
+# cyd_studio_checksum: ec9b38d033b69733
 
 # Projektdaten für den Import in CYD Studio (nicht bearbeiten)
-# cyd_studio_project: H4sIAAAAAAAC/7VWXW/rNgz9K5n2mhSu06W9eRsGDBuw4Q7Ywx6GwqBtxhYqS4YkJ82K/PeRkuw4
-#   6c3tBmxPcSiRPDz8EN9EacDWYivQ9et8lT+sc5flT1Ys40mxBytBe7rh/OPj0yc6qHEvKyw0dEji
-#   6livWlDqAEc6a5QpQYntm9gZ49HyF2ooFZKTHSiHS9GibFqyuN4sxUHWDXontn8+n/gE6isdb4eZ
-#   Sv40V3kToGSjCYTCnSfv/tgzpB4aLLz0CsVpeb5kg43pVqVM9SJOzydy3FhZs9vKKDKckwB6sSV8
-#   PdS11E34tuZAhw90nS+Lxqga9ao31luQbLhDD2xl6GvwDF7kWb5ZZZ+IV0IiEmM/TWxp2MsGvDSa
-#   1VrTYcHY6U4HUtMF15pDISuj3chEkCgokYEmQp0/KlbyUJbAqXMHySFGjSgteuNk9CS86ZkGC3oS
-#   aaORZAcLfQHWDDpRT6iNlah9Qilm4TLUmAamrzB7tPRLfvWgFJFUBYWulluOTCTaUmRSF/PoI1QF
-#   RzNwrYV8TIT9GlV6sMiVGM0HIsaCSZHKDkm/cOOdeamQqvTH8aQV2/sEqGLT1vQuVq3tgBG0265b
-#   wJgCzueZbvkXo3pVnNOLYiKPoXpexTZbCnKWcf2NnkUpNdhj4VA7Y+921mhf1MZwxmZ4kmSCNOMx
-#   HYX0k+hHtrBIQo+vvjC7Hcl/UMZhPclY+3OPegY3IZG6lhX4oH+F/P4COUd3E3AKfQIMCm10mwib
-#   RZDujhH8Ev/OsF+g/hDx/QxxfoE4kdybA17BHUUT3hor2QH3UzZhnWH8Ld0ftOTC+GMGKjqhGakG
-#   nAO6PwOCamxvqiGIo40hFgELTYKrTiQlMmt5wjK1PLLu/GB1oIeb2VJFxyqmmzeLmgwnjS/V0UjB
-#   GOL3Si349iyyCjUW5eC90e+LY01Tc/lx20sd20kGGwEXi/5l9/8cVf6b7h/rgi46Al0Q2FomgG0I
-#   MsA8IPgWb7VhOl0RJK+OK+r9oT7O6PwcjXMIQ4dWVqkTvlY4N6fGlNoRm6Z39bLd4vNGGfMBcgnV
-#   SzOb4fOJFbsrPEJ7XMBCU50tajh+M8t9DOMdqvyfJf1AaaraMd+trOmRfJ/xNBlupPz31AD/28z3
-#   XyIwLRHd4M+LR2JrBPQhSRmR9Ey2TT/0Yash0FWLHQTfDr2nbSJ67WXxghO4MmwnGp2jx4bnb5Zd
-#   CHVagL6b9q84Wdy5e3QzxOUhEB4Uis5wkq6ZoEne8XaSb7Ms5IbS6c/vmxlsmD5p5LQWiXhFnOR3
-#   tAZ5Q0fZZrvOmA6LYTqF3QV2VICciTVht01ZhA3u3TIXsuhooxjcuTFcZZGagqoy7H/j2BS17AjD
-#   ZHmTLa/2yROnfCcjpQWJFNf/FMzgkB5cMu4TU7zuUfd2cctyZJfw0HtVgw1PER9N9R0zVVWhBsW3
-#   u4fHvNyI0+lvQNV/LzgLAAA=
+# cyd_studio_project: H4sIAAAAAAAC/7VWW2/rNgz+K5n2mhSu09vJ2+4bsOEMGIY9DIUgW4wtVJYMSU6aFfnvh5Rkx0lP
+#   1w3YHorGlEh+/HgRX1hlhZNsw8D363JV3qxLX5QPji3TCd8Jp4QJeMOH+/uHD3ggYadq4EZ0gOL6
+#   IFet0HovDnjWaFsJzTYvbGttAEe/wIhKAzrZCu1hyVpQTYsW13dLtleygeDZ5s/HI50IeaET3DBT
+#   KR/mKi9MaNUYBKFhG9B7OPQEqRcN8KCCBnZcni65aGO6VWtbP7Hj4xEdN05JcltbjYZLFIiebRBf
+#   L6RUpom/nd3j4Q1ep8ussVqCWfXWBScUGe4gCLIy9FIEAs/KorxbFR+QV0TCMmM/TmwZsVONCMoa
+#   UmttB5yw451OKIMXfGv3XNXW+JGJKNGiAgKaCfXhoEkpiKoSlDq/VxRi0khS3luvkicWbE80OGEm
+#   kbEGULZ3oufC2cFk6hG1dQpMyCjZLFyCmtJA9HG7A4f/0a8ZtEaS6qjQSbWhyFimLUemDJ9Hn6Bq
+#   cbAD1VrMx0TYL0mlFw6oEpP5SMRYMDlS1QHqcz/emZcKqqpwGE9atrnOgGoy7WzvU9W6ThCCdtN1
+#   CzGmgPJ5olv9RaieNeX0rJjQY6yeZ7YplgydFVR/o2dWKSPcgXsw3rqrrbMmcGktZWyGJ0smSDMe
+#   81FMP4q+JwuLLAzwHLjdblH+jbYe5CQj7Y89mBncjEQZqWoRov4F8usz5BTdm4Bz6BNgocElt5mw
+#   WQT57hjBz+lzhv0M9buIr2eIyzPEmeTe7uEC7iia8EqoVSeon4oJ6wzjr/n+YBQVxh8zUMkJzkg9
+#   wBzQ9QmQqMf2xhoSabQRRB6x4CS46ERUQrOOJixRSyPrKgzORHqomR1WdKpivPlmUaPhrPG5Ohop
+#   GEP8SusF3Z5FVoMBXg0hWPO6ONY4NZfvt70yqZ1UtBFxkehfdv9PSeW/6f6xLvCiR9AcwUqVAbYx
+#   yAhzDyK08FYb5tMVQgr6sMLeH+RhRufHZJxCGDpwqs6d8HeF8+bUmFI7YjP4rp63W3reMGMhQq5E
+#   /dTMZvh8YqXuio/QDhZiYbDOFlIcvpjlPoXxClX5z5K+xzTV7ZjvVkl8JF9nPE+GN1L+W26A/23m
+#   h88RmJeIbginxSOzNQJ6l6QCSXpE27Yf+rjVIOi6hU5E3x5CwG0iee0Vf4IJXBW3EwPe42ND87co
+#   zoQmL0C30/6VJos/dY9phrQ8RMK1bbiGXSzIb7/7+vcfiF4ywjtLibtkB6d7RxtLuSmKmC9McTi9
+#   eXZwcSLlMdQ6wGRo5Km8wtUoWDwq7jbrgihyECdW3GfEFouSsrPGeFxT8bjVvVrwYmY9bhmDPzWL
+#   rx1go2Clxp1wHKVMqg4xTJbviuXFjnmkMtiqRDNHkaaemIKRxBqNeKxGoE0sfpB3VXPV58+hMjRp
+#   WXl7ezX+ETODB3zCEVrI3NMCifOgS3ubR1QYDb6AUrj4uNHR1DEp93Udq5p9ub25L6s7djx+AjUb
+#   rIeKCwAA

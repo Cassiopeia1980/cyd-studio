@@ -1,5 +1,5 @@
 # ======================================================================
-# Erzeugt von CYD Studio (Generator 0.8.0) – ESPHome >= 2026.9.0
+# Erzeugt von CYD Studio (Generator 0.8.0) – ESPHome >= 2026.11.0
 # Projekt: Office · Board: ESP32-2432S028R (Cheap Yellow Display 2,8″)
 # Stand: 2026-09-24
 #
@@ -27,7 +27,7 @@ substitutions:
 esphome:
   name: "${device_name}"
   friendly_name: "${friendly_name}"
-  min_version: 2026.9.0
+  min_version: 2026.11.0
   on_boot:
     priority: -100
     then:
@@ -573,12 +573,10 @@ script:
           snprintf(buf, sizeof(buf), "%d°", (int) lroundf(hue));
           lv_label_set_text(id(cyd_li_hue_value), buf);
           for (lv_obj_t *o : {id(cyd_li_ct_icon), id(cyd_li_ct), id(cyd_li_ct_value)}) {
-            if (has_ct) lv_obj_remove_flag(o, LV_OBJ_FLAG_HIDDEN);
-            else lv_obj_add_flag(o, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_set_hidden(o, !(has_ct));
           }
           for (lv_obj_t *o : {id(cyd_li_hue_icon), id(cyd_li_hue), id(cyd_li_hue_value)}) {
-            if (has_hs) lv_obj_remove_flag(o, LV_OBJ_FLAG_HIDDEN);
-            else lv_obj_add_flag(o, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_set_hidden(o, !(has_hs));
           }
       - lvgl.widget.show: cyd_light
   - id: cyd_update_time
@@ -1443,23 +1441,24 @@ lvgl:
                   long_mode: DOT
                   styles: cyd_text_3
                   text: "–"
-# cyd_studio_checksum: df197dee5c895ab8
+# cyd_studio_checksum: 1ed1c4acbb59850d
 
 # Projektdaten für den Import in CYD Studio (nicht bearbeiten)
-# cyd_studio_project: H4sIAAAAAAAC/41VXY/bNhD8L3y2DrLsujkBeUgboEiApkX6kRbBgVhJK4kVRQokZedy8H/vLiXb
-#   cq5G702iuLuzs6PZJ1FYcJXIBfphkyXZdpP5NHvlxGr6IvfgFJggcjNqvRIV7lWJ0kCPFOR7cKFS
-#   ftDwSBGNtgVokT+J2tqAjp/QQKGRKtSgPa5Ei6ppKd1mtxIHVTUYvMg/Pxz5C1TfxAQ3LkKyV8uQ
-#   JwFaNYZQaKwDVQ+PA2MaoEEZVNAojqvLJRdznG+V2padOD4cqXDjVMVlS6sp8ZYOYBA5FRugqpRp
-#   4rOzB/q4oet8WTRWV2gShzU6NCUmre0x0apDqtFjAE44DhUE7kNkabZL0nvil0CJmb1f6pq4FPy+
-#   Vw0EZQ1HcSbJXdAVfqYLvrUHqUpr/ImTeKKhQH05Co+aY4w1MeaguNOZ9gBFAU4O1qupDo03BNsz
-#   Iw7M+dRrVXH0wcEgwdnRnEZHuK1TaMIMVGgwlS9h4OsMdxoKkyntHp3jRLNqGDpF9JXK544iiadn
-#   I5cMTN2QouwYmGmeznPOBiDez7KMdJwENCUIqkfKIP3pzlI6FKrCIzfBsrg72NZ8VX2PTvqyJT46
-#   qtCKfD0DDWuu6OzgeUCLbg70izhbMKA4DDr+bU5wPGst2KbRrEkdmSUhr8QXkacrQQhSFultOFqV
-#   UbZLMNkNMCUqTXJN9Cz1E6K3WHZopkz/iyq7icphcJY018eJLwFtbgBiP8BncD5ynpfSs/4PIBX6
-#   TkJfsBi/QbK9gYTcJPHBqSE5+dkFz5s50wupuUZUstSXA6vReLa+a1zf3dKPMpU9JL4dwxR0Jslq
-#   rUnO5qVEZVewajB3oOh/H52q1TM4uxtwKCRZhJzA/Ml5NQTrXkpSRs76QDXsMA7R3+kXLVvsIYLw
-#   GAIJNVaHQckOGfPXn/r1+C79ffNz5X/89Lb9+8v7+7BRf6Uf7rv6nw/f690Pf3Tb7tf1R/ua11N0
-#   dIPeywp4Lml6dWimpbFNz0sLSjYYf3EY04yTzUbLiwGyt2xbFyon76gdWSXZeJanaXQsmno4m6u3
-#   oys5j61rNtTWIRmSJqqzO1pzwdKndJdvUqaPfqPRGRldHurAlkN7hVC6ppBx6z1fmtHePDnv6C9u
-#   7EuHJDbYT0tz6o6bUezq59RrSn21UI9shbWayJeUTRdAu3BmZfQoPVLqMBPFGzLQ6Li/HljbhMYF
-#   It11Yv50Nnwe6fH4LyCYPQhWCAAA
+# cyd_studio_project: H4sIAAAAAAAC/41V247bNhD9Fz5bC1n2ulkBeWiaIEiBpkXaXIpiQYykkcSKIgWSsrNZ+N8zQ8m3
+#   bI3ugwGZ5Mwcnjk88ygKC64SuUA/rLIkW68yn2YvnFhMO3ILToEJIjej1gtR4VaVKA30SEG+Bxcq
+#   5QcNDxTRaFuAFvmjqK0N6PgLDRQaqUIN2uNCtKialtKtNguxU1WDwYv8n/s970D1Q0xw41lI9uI8
+#   5FGAVo0hFBrrQNXDw8CYBmhQBhU0iv3idMjFHMdTpbZlJ/b3eyrcOFVx2dJqSrymBRhETsUGqCpl
+#   mvjt7I42V3ScD4vG6gpN4rBGh6bEpLU9Jlp1SDV6DMAJx6GCwPcQWZptkvSO+CVQYmbv97omLgX/
+#   36oGgrKGoziT5FvQEf6mA761O6lKa/yBk7iioUB9WgoPmmOMNTFmp/imM+0BigKcHKxXUx1qbwi2
+#   Z0YcmOOq16ri6J2DQYKzozm0jnBbp9CEGajQYCpfwsDHGe7UFCZT2i06x4lm1TB0iugrlc83iiQe
+#   vo08Z2C6DSnKjoGZ5u485WwA4v0oy0jHQUBTgqB6pAzSH86cS4dCVXjgS7Asbna2Nd9U36OTvmyJ
+#   j44qtCJfzkDDkis6O3hu0NltdvREnC0YUGwGLf85J9gftRZs02jWpI7MkpAX4qvI04UgBCmL9Doc
+#   rcoo23Mw2RUwJSpNck30LPUDotdYdmimTP+LKruKymFwljTXx46fA1pdAcR+gE/gfOA8z6Vn+R9A
+#   KvSdhL5gMf6AZH0FCblJ4oNTQ3LwsxOen+dMz6TmElHJUj9vWI3Gs/Vd4rq9ph9lKrtLfDuGKehI
+#   ktVak5zNc4nKLmDVYG5A0XsfnarVEzibK3AoJDkLOYD5xHk1BOueS1JGznpPNewwDtHf6YmWLfYQ
+#   QXgMgYQaq8OgZIeM+dvbfjm+S/9a/Vb5Xz6/bv/++utdWKkv6fu7rv73/U968+pjt+7+WH6wL3k8
+#   RUc36L2sgPuSpheLZhoa6/Q4tKBkg/EnhzHNONlstDxtG6lxOz2ZN68+vmXX4SSyt2xlJ3onP6kd
+#   2SdZe5anaXQxUkI4Gq63oys5t61rNtnWIZmUJvqzGxp9wdJWuslXKVNKT2t0RkbnhzqwDdGsIeSu
+#   KWSchE8HabQ8T248+pND+9IhCRC20yCdbswXVOz0x9RLSn0xZPdsj7WaGiIpmy6A5uPMVMWkCR7w
+#   NM52TDb/4dqqlGqY/46FQTbs7Pb25vBjYkaP0iMBCzP1PHMDiYHZ6YFfC93FBWqj68S8dRwhLJL9
+#   /js1ZRMtqAgAAA==

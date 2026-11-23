@@ -5,6 +5,7 @@ from __future__ import annotations
 import base64
 import gzip
 import hashlib
+import ipaddress
 import json
 import re
 from dataclasses import dataclass, field
@@ -35,7 +36,8 @@ from .widgets.basic import TIME_FORMATS, time_lambda
 from .widgets.common import opa, page_show, widget_id
 
 GENERATOR_VERSION = "0.8.0"
-ESPHOME_MIN_VERSION = "2026.9.0"
+ESPHOME_MIN_VERSION = "2026.11.0"
+LOG_LEVELS = ("ERROR", "WARN", "INFO", "DEBUG", "VERBOSE")
 ROUNDTRIP_PREFIX = "# cyd_studio_project: "
 CHECKSUM_PREFIX = "# cyd_studio_checksum: "
 REFERENCE_CREDIT = (
@@ -123,6 +125,32 @@ def split_generated(text: str) -> tuple[str, str | None]:
     body = text[: marker + 1]
     rest = text[marker + 1 + len(CHECKSUM_PREFIX) :]
     return body, rest.split("\n", 1)[0].strip()
+
+
+def _manual_ip(ctx: Context, wifi_settings: dict[str, Any]) -> dict[str, str] | None:
+    """wifi.manual_ip from the project settings; None when no (valid) fixed address is set."""
+    ip = str(wifi_settings.get("static_ip") or "").strip()
+    if not ip:
+        return None
+    gateway = str(wifi_settings.get("gateway") or "").strip()
+    subnet = str(wifi_settings.get("subnet") or "").strip() or "255.255.255.0"
+    dns = str(wifi_settings.get("dns") or "").strip()
+    try:
+        out = {
+            "static_ip": str(ipaddress.IPv4Address(ip)),
+            "gateway": str(ipaddress.IPv4Address(gateway)),
+            "subnet": str(ipaddress.IPv4Address(subnet)),
+        }
+        if dns:
+            out["dns1"] = str(ipaddress.IPv4Address(dns))
+    except ValueError:
+        ctx.warn(
+            "static_ip_invalid",
+            "Feste IP-Adresse ungültig (IP, Gateway und Subnetz werden benötigt): es wird DHCP verwendet.",
+            "Invalid fixed IP address (IP, gateway and subnet are required): DHCP is used.",
+        )
+        return None
+    return out
 
 
 def api_key_secret_name(device_name: str) -> str:
@@ -267,7 +295,9 @@ def _document(ctx: Context) -> dict[Any, Any]:
         "on_boot": {"priority": -100, "then": on_boot},
     }
     doc["esp32"] = {"board": board["board"], "framework": {"type": board.get("framework", "arduino")}}
-    doc["logger"] = None
+    log_level = str(s.get("log_level") or "DEBUG").upper()
+    # ESPHome's own default is DEBUG: write nothing in that case so existing projects keep their YAML
+    doc["logger"] = {"level": log_level} if log_level in LOG_LEVELS and log_level != "DEBUG" else None
 
     api: dict[str, Any] = {}
     api_key = s.get("api_key")
@@ -284,6 +314,9 @@ def _document(ctx: Context) -> dict[Any, Any]:
     wifi: dict[str, Any] = {"ssid": Secret("wifi_ssid"), "password": Secret("wifi_password")}
     if s.get("wifi", {}).get("ap_fallback", True):
         wifi["ap"] = {"ssid": (p["name"][:20] + " Fallback").strip()}
+    manual_ip = _manual_ip(ctx, s.get("wifi", {}))
+    if manual_ip:
+        wifi["manual_ip"] = manual_ip
     doc["wifi"] = wifi
     if s.get("wifi", {}).get("ap_fallback", True):
         doc["captive_portal"] = None
@@ -717,8 +750,7 @@ def _light_script(rows: dict[str, list[str]]) -> dict[str, Any]:
         objs = ", ".join(f"id({i})" for i in ids)
         return [
             f"for (lv_obj_t *o : {{{objs}}}) {{",
-            f"  if ({flag}) lv_obj_remove_flag(o, LV_OBJ_FLAG_HIDDEN);",
-            "  else lv_obj_add_flag(o, LV_OBJ_FLAG_HIDDEN);",
+            f"  lv_obj_set_hidden(o, !({flag}));",
             "}",
         ]
 
