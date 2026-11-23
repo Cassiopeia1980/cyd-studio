@@ -283,10 +283,10 @@ sensor:
             static const uint32_t c[] = {0xA3E635, 0x8B98A5, 0xE6EDF3, 0xE6EDF3, 0x8B98A5, 0x8B98A5, 0x22D3EE, 0x1B2430};
             id(cyd_tile_state)(id(w_home_l), id(w_home_l_icon), id(w_home_l_label), id(w_home_l_state), nullptr, id(ha_light_flur).state, id(ha_light_flur_brightness_num).state, 1, nullptr, nullptr, c);
             if ((id(ha_binary_sensor_nacht).state == "on" || id(ha_binary_sensor_nacht).state == "open" || id(ha_binary_sensor_nacht).state == "opening" || id(ha_binary_sensor_nacht).state == "unlocked" || id(ha_binary_sensor_nacht).state == "home" || id(ha_binary_sensor_nacht).state == "playing")) {
-              lv_obj_set_style_bg_color(id(w_home_l), lv_color_hex(0x1E1B4B), LV_PART_MAIN | LV_STATE_ANY);
+              lv_obj_set_style_bg_color(id(w_home_l), lv_color_hex(0x1E1B4B), (lv_style_selector_t) LV_PART_MAIN | (lv_style_selector_t) LV_STATE_ANY);
             } else {
-              lv_obj_remove_local_style_prop(id(w_home_l), LV_STYLE_BG_COLOR, LV_PART_MAIN | LV_STATE_ANY);
-              lv_obj_remove_local_style_prop(id(w_home_l), LV_STYLE_BORDER_COLOR, LV_PART_MAIN | LV_STATE_ANY);
+              lv_obj_remove_local_style_prop(id(w_home_l), LV_STYLE_BG_COLOR, (lv_style_selector_t) LV_PART_MAIN | (lv_style_selector_t) LV_STATE_ANY);
+              lv_obj_remove_local_style_prop(id(w_home_l), LV_STYLE_BORDER_COLOR, (lv_style_selector_t) LV_PART_MAIN | (lv_style_selector_t) LV_STATE_ANY);
             }
   - platform: homeassistant
     id: ha_light_flur_color_temp_kelvin_num
@@ -303,14 +303,14 @@ text_sensor:
       then:
         - lambda: !lambda |-
             // state rules: the first matching rule wins
-            if ((!id(ha_sensor_temp).state.empty() && atof(id(ha_sensor_temp).state.c_str()) > 25.0f)) {
-              lv_obj_set_style_border_color(id(w_home_t), lv_color_hex(0xEF4444), LV_PART_MAIN | LV_STATE_ANY);
+            if (([&]() { char *e = nullptr; const float v = strtof(id(ha_sensor_temp).state.c_str(), &e); return e != id(ha_sensor_temp).state.c_str() && v > 25.0f; }())) {
+              lv_obj_set_style_border_color(id(w_home_t), lv_color_hex(0xEF4444), (lv_style_selector_t) LV_PART_MAIN | (lv_style_selector_t) LV_STATE_ANY);
               lv_obj_set_style_text_color(id(w_home_t_value), lv_color_hex(0xEF4444), LV_PART_MAIN);
-            } else if ((!id(ha_sensor_temp).state.empty() && atof(id(ha_sensor_temp).state.c_str()) < 18.0f)) {
+            } else if (([&]() { char *e = nullptr; const float v = strtof(id(ha_sensor_temp).state.c_str(), &e); return e != id(ha_sensor_temp).state.c_str() && v < 18.0f; }())) {
               lv_obj_set_style_text_color(id(w_home_t_value), lv_color_hex(0x38BDF8), LV_PART_MAIN);
             } else {
-              lv_obj_remove_local_style_prop(id(w_home_t), LV_STYLE_BG_COLOR, LV_PART_MAIN | LV_STATE_ANY);
-              lv_obj_remove_local_style_prop(id(w_home_t), LV_STYLE_BORDER_COLOR, LV_PART_MAIN | LV_STATE_ANY);
+              lv_obj_remove_local_style_prop(id(w_home_t), LV_STYLE_BG_COLOR, (lv_style_selector_t) LV_PART_MAIN | (lv_style_selector_t) LV_STATE_ANY);
+              lv_obj_remove_local_style_prop(id(w_home_t), LV_STYLE_BORDER_COLOR, (lv_style_selector_t) LV_PART_MAIN | (lv_style_selector_t) LV_STATE_ANY);
               lv_obj_remove_local_style_prop(id(w_home_t_value), LV_STYLE_TEXT_COLOR, LV_PART_MAIN);
             }
   - platform: homeassistant
@@ -326,10 +326,10 @@ text_sensor:
             static const uint32_t c[] = {0xA3E635, 0x8B98A5, 0xE6EDF3, 0xE6EDF3, 0x8B98A5, 0x8B98A5, 0x22D3EE, 0x1B2430};
             id(cyd_tile_state)(id(w_home_l), id(w_home_l_icon), id(w_home_l_label), id(w_home_l_state), nullptr, id(ha_light_flur).state, id(ha_light_flur_brightness_num).state, 1, nullptr, nullptr, c);
             if ((id(ha_binary_sensor_nacht).state == "on" || id(ha_binary_sensor_nacht).state == "open" || id(ha_binary_sensor_nacht).state == "opening" || id(ha_binary_sensor_nacht).state == "unlocked" || id(ha_binary_sensor_nacht).state == "home" || id(ha_binary_sensor_nacht).state == "playing")) {
-              lv_obj_set_style_bg_color(id(w_home_l), lv_color_hex(0x1E1B4B), LV_PART_MAIN | LV_STATE_ANY);
+              lv_obj_set_style_bg_color(id(w_home_l), lv_color_hex(0x1E1B4B), (lv_style_selector_t) LV_PART_MAIN | (lv_style_selector_t) LV_STATE_ANY);
             } else {
-              lv_obj_remove_local_style_prop(id(w_home_l), LV_STYLE_BG_COLOR, LV_PART_MAIN | LV_STATE_ANY);
-              lv_obj_remove_local_style_prop(id(w_home_l), LV_STYLE_BORDER_COLOR, LV_PART_MAIN | LV_STATE_ANY);
+              lv_obj_remove_local_style_prop(id(w_home_l), LV_STYLE_BG_COLOR, (lv_style_selector_t) LV_PART_MAIN | (lv_style_selector_t) LV_STATE_ANY);
+              lv_obj_remove_local_style_prop(id(w_home_l), LV_STYLE_BORDER_COLOR, (lv_style_selector_t) LV_PART_MAIN | (lv_style_selector_t) LV_STATE_ANY);
             }
   - platform: homeassistant
     id: ha_light_flur_supported_color_modes
@@ -353,10 +353,10 @@ text_sensor:
             static const uint32_t c[] = {0xA3E635, 0x8B98A5, 0xE6EDF3, 0xE6EDF3, 0x8B98A5, 0x8B98A5, 0x22D3EE, 0x1B2430};
             id(cyd_tile_state)(id(w_home_l), id(w_home_l_icon), id(w_home_l_label), id(w_home_l_state), nullptr, id(ha_light_flur).state, id(ha_light_flur_brightness_num).state, 1, nullptr, nullptr, c);
             if ((id(ha_binary_sensor_nacht).state == "on" || id(ha_binary_sensor_nacht).state == "open" || id(ha_binary_sensor_nacht).state == "opening" || id(ha_binary_sensor_nacht).state == "unlocked" || id(ha_binary_sensor_nacht).state == "home" || id(ha_binary_sensor_nacht).state == "playing")) {
-              lv_obj_set_style_bg_color(id(w_home_l), lv_color_hex(0x1E1B4B), LV_PART_MAIN | LV_STATE_ANY);
+              lv_obj_set_style_bg_color(id(w_home_l), lv_color_hex(0x1E1B4B), (lv_style_selector_t) LV_PART_MAIN | (lv_style_selector_t) LV_STATE_ANY);
             } else {
-              lv_obj_remove_local_style_prop(id(w_home_l), LV_STYLE_BG_COLOR, LV_PART_MAIN | LV_STATE_ANY);
-              lv_obj_remove_local_style_prop(id(w_home_l), LV_STYLE_BORDER_COLOR, LV_PART_MAIN | LV_STATE_ANY);
+              lv_obj_remove_local_style_prop(id(w_home_l), LV_STYLE_BG_COLOR, (lv_style_selector_t) LV_PART_MAIN | (lv_style_selector_t) LV_STATE_ANY);
+              lv_obj_remove_local_style_prop(id(w_home_l), LV_STYLE_BORDER_COLOR, (lv_style_selector_t) LV_PART_MAIN | (lv_style_selector_t) LV_STATE_ANY);
             }
   - platform: homeassistant
     id: ha_binary_sensor_fenster
@@ -371,10 +371,10 @@ text_sensor:
             static const uint32_t c[] = {0xEF4444, 0xA3E635, 0xE6EDF3, 0xE6EDF3, 0x8B98A5, 0x8B98A5, 0x1B2430, 0x1B2430};
             id(cyd_tile_state)(nullptr, id(w_home_a_icon), nullptr, id(w_home_a_state), nullptr, id(ha_binary_sensor_fenster).state, NAN, 0, "An", "Aus", c);
             if ((id(ha_binary_sensor_fenster).state == "on" || id(ha_binary_sensor_fenster).state == "open" || id(ha_binary_sensor_fenster).state == "opening" || id(ha_binary_sensor_fenster).state == "unlocked" || id(ha_binary_sensor_fenster).state == "home" || id(ha_binary_sensor_fenster).state == "playing")) {
-              lv_obj_set_style_bg_color(id(w_home_a), lv_color_hex(0x450A0A), LV_PART_MAIN | LV_STATE_ANY);
+              lv_obj_set_style_bg_color(id(w_home_a), lv_color_hex(0x450A0A), (lv_style_selector_t) LV_PART_MAIN | (lv_style_selector_t) LV_STATE_ANY);
             } else {
-              lv_obj_remove_local_style_prop(id(w_home_a), LV_STYLE_BG_COLOR, LV_PART_MAIN | LV_STATE_ANY);
-              lv_obj_remove_local_style_prop(id(w_home_a), LV_STYLE_BORDER_COLOR, LV_PART_MAIN | LV_STATE_ANY);
+              lv_obj_remove_local_style_prop(id(w_home_a), LV_STYLE_BG_COLOR, (lv_style_selector_t) LV_PART_MAIN | (lv_style_selector_t) LV_STATE_ANY);
+              lv_obj_remove_local_style_prop(id(w_home_a), LV_STYLE_BORDER_COLOR, (lv_style_selector_t) LV_PART_MAIN | (lv_style_selector_t) LV_STATE_ANY);
             }
   - platform: homeassistant
     id: ha_person_anna
@@ -382,7 +382,7 @@ text_sensor:
     on_value:
       then:
         - lambda: !lambda |-
-            if ((id(ha_person_anna).state == "home") && (!id(ha_sensor_lux).state.empty() && atof(id(ha_sensor_lux).state.c_str()) < 50.0f)) lv_obj_remove_flag(id(w_home_g), LV_OBJ_FLAG_HIDDEN);
+            if ((id(ha_person_anna).state == "home") && ([&]() { char *e = nullptr; const float v = strtof(id(ha_sensor_lux).state.c_str(), &e); return e != id(ha_sensor_lux).state.c_str() && v < 50.0f; }())) lv_obj_remove_flag(id(w_home_g), LV_OBJ_FLAG_HIDDEN);
             else lv_obj_add_flag(id(w_home_g), LV_OBJ_FLAG_HIDDEN);
         - lambda: !lambda |-
             if ((id(ha_person_anna).state != "home")) lv_obj_remove_flag(id(w_home_w), LV_OBJ_FLAG_HIDDEN);
@@ -393,7 +393,7 @@ text_sensor:
     on_value:
       then:
         - lambda: !lambda |-
-            if ((id(ha_person_anna).state == "home") && (!id(ha_sensor_lux).state.empty() && atof(id(ha_sensor_lux).state.c_str()) < 50.0f)) lv_obj_remove_flag(id(w_home_g), LV_OBJ_FLAG_HIDDEN);
+            if ((id(ha_person_anna).state == "home") && ([&]() { char *e = nullptr; const float v = strtof(id(ha_sensor_lux).state.c_str(), &e); return e != id(ha_sensor_lux).state.c_str() && v < 50.0f; }())) lv_obj_remove_flag(id(w_home_g), LV_OBJ_FLAG_HIDDEN);
             else lv_obj_add_flag(id(w_home_g), LV_OBJ_FLAG_HIDDEN);
 
 button:
@@ -1330,7 +1330,7 @@ lvgl:
                   long_mode: DOT
                   styles: cyd_text_7
                   text: "Zurück"
-# cyd_studio_checksum: 981ecb1b75a33dd4
+# cyd_studio_checksum: bec4ba72664ad546
 
 # Projektdaten für den Import in CYD Studio (nicht bearbeiten)
 # cyd_studio_project: H4sIAAAAAAAC/51Wy27rNhD9lQt26wSy4wSpty3aru6i6KpFQIykkUyEIlWSsuMb+J/6AV21P9YZ

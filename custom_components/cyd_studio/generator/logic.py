@@ -17,7 +17,7 @@ from .model import conditions_of, rules_of
 from .theme import hex_color
 
 RULE_COLOR_KEYS = ("bg", "border", "text", "icon")
-ANY = "LV_PART_MAIN | LV_STATE_ANY"  # rule colors apply in every state (on, pressed, …)
+ANY = "(lv_style_selector_t) LV_PART_MAIN | (lv_style_selector_t) LV_STATE_ANY"  # every state (on, pressed, …); casts avoid the enum-mix warning
 
 
 def cpp_condition(ctx: Context, cond: dict[str, Any]) -> tuple[str, str]:
@@ -31,7 +31,9 @@ def cpp_condition(ctx: Context, cond: dict[str, Any]) -> tuple[str, str]:
     if op in ("gt", "lt"):
         number = float(cond["value"])
         cmp = ">" if op == "gt" else "<"
-        return f"(!{s}.empty() && atof({s}.c_str()) {cmp} {number!r}f)", src.id
+        # strtof with end check: "unavailable"/"unknown"/"" never match (atof would give 0.0)
+        return (f"([&]() {{ char *e = nullptr; const float v = strtof({s}.c_str(), &e); "
+                f"return e != {s}.c_str() && v {cmp} {number!r}f; }}())"), src.id
     value = cpp_str(str(cond.get("value", "")))
     return (f"({s} == {value})" if op == "eq" else f"({s} != {value})"), src.id
 
@@ -92,8 +94,8 @@ def apply_logic(ctx: Context, wid: str, widget: dict[str, Any], emitted: list[di
             )
         branches.append((expr, body))
     restore = [
-        f"lv_obj_remove_local_style_prop(id({wid}), LV_STYLE_BG_COLOR, LV_PART_MAIN | LV_STATE_ANY);",
-        f"lv_obj_remove_local_style_prop(id({wid}), LV_STYLE_BORDER_COLOR, LV_PART_MAIN | LV_STATE_ANY);",
+        f"lv_obj_remove_local_style_prop(id({wid}), LV_STYLE_BG_COLOR, {ANY});",
+        f"lv_obj_remove_local_style_prop(id({wid}), LV_STYLE_BORDER_COLOR, {ANY});",
     ]
     if not replay:  # static colors come from the label styles again
         restore += [f"lv_obj_remove_local_style_prop(id({t}), LV_STYLE_TEXT_COLOR, LV_PART_MAIN);"
