@@ -113,25 +113,35 @@ async def write_config(
     secrets: dict[str, str],
     username: str = "",
     password: str = "",
+    replace: frozenset[str] | set[str] = frozenset(),
 ) -> dict[str, list[str]]:
     """Write ``<name>.yaml`` and add the given secrets that do not exist yet.
 
-    Returns ``secrets_added``, ``secrets_existing`` (key exists, its value is unknown and left alone) and
-    ``secrets_known`` (all key names in secrets.yaml afterwards).
+    Keys listed in ``replace`` (the device's API key) are set even when they exist: the builder never reveals
+    values, and a stale key would silently differ from the one the project and Home Assistant use.
+
+    Returns ``secrets_added``, ``secrets_replaced``, ``secrets_existing`` (key exists, its value is unknown and left
+    alone) and ``secrets_known`` (all key names in secrets.yaml afterwards).
     """
 
     async def work(cmd: Callable[..., Awaitable[Any]]) -> dict[str, list[str]]:
         known = {str(k) for k in (await cmd("config/get_secrets") or [])}
         await cmd("devices/create", name=name, file_content=yaml_text, overwrite=True)
         added: list[str] = []
+        replaced: list[str] = []
         existing: list[str] = []
         for key, value in secrets.items():
-            if key in known:
+            if key in known and key not in replace:
                 existing.append(key)
-            else:
-                await cmd("config/set_secret", key=key, value=value)
-                added.append(key)
-        return {"secrets_added": added, "secrets_existing": existing, "secrets_known": sorted(known | set(added))}
+                continue
+            await cmd("config/set_secret", key=key, value=value)
+            (replaced if key in known else added).append(key)
+        return {
+            "secrets_added": added,
+            "secrets_replaced": replaced,
+            "secrets_existing": existing,
+            "secrets_known": sorted(known | set(added)),
+        }
 
     return await _with_dashboard(session, url, username, password, work)
 

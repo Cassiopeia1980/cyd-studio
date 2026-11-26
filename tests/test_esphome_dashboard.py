@@ -85,6 +85,18 @@ def test_write_adds_only_missing_secrets() -> None:
     assert set(out["secrets_known"]) == {"wifi_ssid", "api_key_labor_touch"}
 
 
+def test_write_replaces_listed_secret() -> None:
+    builder = FakeBuilder()
+    builder.secrets["api_key_labor_touch"] = "OLD"
+    secrets = {"wifi_ssid": "ignored", "api_key_labor_touch": "KEY"}
+    out = run(write_config(builder, "http://h:6052", "labor-touch", "esphome:\n", secrets, replace={"api_key_labor_touch"}))
+    assert builder.secrets["api_key_labor_touch"] == "KEY"
+    assert builder.secrets["wifi_ssid"] == "x"
+    assert out["secrets_replaced"] == ["api_key_labor_touch"]
+    assert out["secrets_existing"] == ["wifi_ssid"]
+    assert out["secrets_added"] == []
+
+
 def test_read_config_missing_and_present() -> None:
     builder = FakeBuilder()
     assert run(read_config(builder, "http://h:6052", "a")) is None

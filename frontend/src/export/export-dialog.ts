@@ -154,6 +154,7 @@ export class CydExportDialog extends LitElement {
       return html`<div class="notice ok">
         <p>✓ ${t("saved_to_esphome", { path: sv.path ?? "" })}</p>
         ${sv.backup ? html`<p class="muted">${t("backup_created", { path: sv.backup })}</p>` : nothing}
+        ${sv.secrets_replaced?.length ? html`<p class="muted">${t("api_key_replaced")}</p>` : nothing}
         ${sv.secrets_missing?.length && !this._secretsDone ? html`<form @submit=${(e: Event) => { e.preventDefault(); void this.saveSecrets(e.target as HTMLFormElement); }}>
           <p>${t("secrets_missing")}</p>
           <input name="ssid" placeholder=${t("wifi_ssid")} required />

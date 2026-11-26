@@ -535,7 +535,9 @@ async def _save_remote(
         secrets: dict[str, str] = {}
         if _api_key_as_secret(runtime) and project["settings"].get("api_key"):
             secrets[api_key_secret_name(name)] = project["settings"]["api_key"]
-        written = await esphome_dashboard.write_config(session, url, name, yaml_text, secrets, user, password)
+        written = await esphome_dashboard.write_config(
+            session, url, name, yaml_text, secrets, user, password, replace=set(secrets)
+        )
     except esphome_dashboard.DashboardError as err:
         connection.send_error(msg["id"], "esphome_unreachable", str(err))
         return
@@ -549,6 +551,7 @@ async def _save_remote(
             "path": existing["path"],
             "backup": None,
             "secrets_missing": [k for k in esphome_files.SECRET_KEYS if k not in known_secrets],
+            "secrets_replaced": written["secrets_replaced"],
             # pictures cannot be sent to a remote builder: they have to be copied there by hand
             "missing_images": assets.used_assets(project),
         },

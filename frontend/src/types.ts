@@ -218,6 +218,7 @@ export interface EsphomeSaveResult {
   diff?: string;
   backup?: string | null;
   secrets_missing?: string[];
+  secrets_replaced?: string[];
   missing_images?: string[];
   issues?: Issue[];
 }

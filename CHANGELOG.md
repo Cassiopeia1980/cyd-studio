@@ -3,6 +3,12 @@
 Alle nennenswerten Änderungen an CYD Studio. Versionen folgen [SemVer](https://semver.org/lang/de/);
 jede Version ist ein GitHub-Release, das HACS als Update anbietet.
 
+## 1.0.5-fix6 – 2026-11-26 (Fork)
+
+- Fix: Beim Speichern in einen entfernten Device Builder wird der API-Schlüssel des Projekts jetzt auch dann in die
+  `secrets.yaml` geschrieben, wenn `api_key_<gerät>` dort schon steht. Vorher blieb ein abweichender alter Wert still stehen
+  und das Gerät passte nicht mehr zu Home Assistant. WLAN-Secrets bleiben unangetastet. Das Panel zeigt einen Hinweis.
+
 ## 1.0.5-fix3 – 2026-11-23 (Fork)
 
 - Neu: Im Editor unter „Netzwerk & Protokoll“ lassen sich der Log-Level des Geräts (ERROR bis VERBOSE) und eine feste
